@@ -1,6 +1,0 @@
-/home/vasil/projects/aom/testcontainers-spring-boot/container-mysql/src/main/java/com/github/vaatech/test/docker/mysql/EnableMySQLContainer.java
-/home/vasil/projects/aom/testcontainers-spring-boot/container-mysql/src/main/java/com/github/vaatech/test/docker/mysql/MySQLContainerCustomizer.java
-/home/vasil/projects/aom/testcontainers-spring-boot/container-mysql/src/main/java/com/github/vaatech/test/docker/mysql/MySQLContainerDependenciesAutoConfiguration.java
-/home/vasil/projects/aom/testcontainers-spring-boot/container-mysql/src/main/java/com/github/vaatech/test/docker/mysql/MySQLContainerConfiguration.java
-/home/vasil/projects/aom/testcontainers-spring-boot/container-mysql/src/main/java/com/github/vaatech/test/docker/mysql/MySQLProperties.java
-/home/vasil/projects/aom/testcontainers-spring-boot/container-mysql/src/main/java/com/github/vaatech/test/docker/mysql/MySQLContainer.java
