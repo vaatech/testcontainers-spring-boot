@@ -1,0 +1,16 @@
+com/github/vaatech/test/docker/common/spring/DockerPresenceAutoConfiguration$DependsOnDockerPostProcessor.class
+META-INF/spring-configuration-metadata.json
+com/github/vaatech/test/docker/common/spring/DockerPresenceMarker.class
+com/github/vaatech/test/docker/common/spring/DockerContainersConfiguration.class
+com/github/vaatech/test/docker/common/spring/CommonContainerProperties$DockerImage.class
+com/github/vaatech/test/docker/common/spring/DockerNotPresentException.class
+com/github/vaatech/test/docker/common/spring/DockerPresenceAutoConfiguration.class
+com/github/vaatech/test/docker/common/spring/DependsOnPostProcessor.class
+com/github/vaatech/test/docker/common/spring/CommonContainerProperties.class
+com/github/vaatech/test/docker/common/spring/ContainerCustomizer.class
+com/github/vaatech/test/docker/common/spring/EnableEmbeddedContainers.class
+com/github/vaatech/test/docker/common/spring/DockerContainer.class
+com/github/vaatech/test/docker/common/spring/DockerEnvironment.class
+META-INF/spring-autoconfigure-metadata.properties
+com/github/vaatech/test/docker/common/util/ContainerUtils.class
+com/github/vaatech/test/docker/common/spring/AbstractDockerContainer.class

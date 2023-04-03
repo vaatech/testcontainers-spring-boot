@@ -1,0 +1,103 @@
+{
+  "groups": [
+    {
+      "name": "container.mysql",
+      "type": "com.github.vaatech.test.docker.mysql.MySQLProperties",
+      "sourceType": "com.github.vaatech.test.docker.mysql.MySQLProperties"
+    },
+    {
+      "name": "container.mysql.default-docker-image",
+      "type": "com.github.vaatech.test.docker.common.spring.CommonContainerProperties$DockerImage",
+      "sourceType": "com.github.vaatech.test.docker.mysql.MySQLProperties",
+      "sourceMethod": "getDefaultDockerImage()"
+    },
+    {
+      "name": "container.mysql.docker-image",
+      "type": "com.github.vaatech.test.docker.common.spring.CommonContainerProperties$DockerImage",
+      "sourceType": "com.github.vaatech.test.docker.mysql.MySQLProperties",
+      "sourceMethod": "getDockerImage()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "container.mysql.database",
+      "type": "java.lang.String",
+      "sourceType": "com.github.vaatech.test.docker.mysql.MySQLProperties",
+      "defaultValue": "test_db"
+    },
+    {
+      "name": "container.mysql.default-docker-image.name",
+      "type": "java.lang.String",
+      "sourceType": "com.github.vaatech.test.docker.common.spring.CommonContainerProperties$DockerImage"
+    },
+    {
+      "name": "container.mysql.default-docker-image.registry",
+      "type": "java.lang.String",
+      "sourceType": "com.github.vaatech.test.docker.common.spring.CommonContainerProperties$DockerImage"
+    },
+    {
+      "name": "container.mysql.default-docker-image.version",
+      "type": "java.lang.String",
+      "sourceType": "com.github.vaatech.test.docker.common.spring.CommonContainerProperties$DockerImage"
+    },
+    {
+      "name": "container.mysql.docker-image.name",
+      "type": "java.lang.String",
+      "sourceType": "com.github.vaatech.test.docker.common.spring.CommonContainerProperties$DockerImage"
+    },
+    {
+      "name": "container.mysql.docker-image.registry",
+      "type": "java.lang.String",
+      "sourceType": "com.github.vaatech.test.docker.common.spring.CommonContainerProperties$DockerImage"
+    },
+    {
+      "name": "container.mysql.docker-image.version",
+      "type": "java.lang.String",
+      "sourceType": "com.github.vaatech.test.docker.common.spring.CommonContainerProperties$DockerImage"
+    },
+    {
+      "name": "container.mysql.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": "true"
+    },
+    {
+      "name": "container.mysql.host",
+      "type": "java.lang.String",
+      "sourceType": "com.github.vaatech.test.docker.mysql.MySQLProperties",
+      "defaultValue": "localhost"
+    },
+    {
+      "name": "container.mysql.password",
+      "type": "java.lang.String",
+      "sourceType": "com.github.vaatech.test.docker.mysql.MySQLProperties",
+      "defaultValue": "test"
+    },
+    {
+      "name": "container.mysql.port",
+      "type": "java.lang.Integer",
+      "sourceType": "com.github.vaatech.test.docker.mysql.MySQLProperties",
+      "defaultValue": 3306
+    },
+    {
+      "name": "container.mysql.username",
+      "type": "java.lang.String",
+      "sourceType": "com.github.vaatech.test.docker.mysql.MySQLProperties",
+      "defaultValue": "test"
+    }
+  ],
+  "hints": [
+    {
+      "name": "container.mysql.enabled",
+      "values": [
+        {
+          "value": "true",
+          "description": "Enables configuration of mysql server on startup."
+        },
+        {
+          "value": "false",
+          "description": "Disabled configuration of mysql server on startup."
+        }
+      ]
+    }
+  ]
+}

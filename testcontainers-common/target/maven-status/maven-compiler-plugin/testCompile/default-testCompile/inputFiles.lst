@@ -1,0 +1,2 @@
+/home/vasil/projects/aom/testcontainers-spring-boot/testcontainers-common/src/test/java/com/github/vaatech/aom/test/docker/EchoContainer.java
+/home/vasil/projects/aom/testcontainers-spring-boot/testcontainers-common/src/test/java/com/github/vaatech/aom/test/docker/DockerPresenceMarkerTest.java

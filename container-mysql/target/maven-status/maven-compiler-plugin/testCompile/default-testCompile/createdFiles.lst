@@ -1,0 +1,3 @@
+com/github/vaatech/test/docker/mysql/MySQLContainerTest$TestConfiguration.class
+com/github/vaatech/test/docker/mysql/DisableMySQLTest.class
+com/github/vaatech/test/docker/mysql/MySQLContainerTest.class

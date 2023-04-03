@@ -1,0 +1,8 @@
+META-INF/spring-configuration-metadata.json
+com/github/vaatech/test/docker/mysql/EnableMySQLContainer.class
+com/github/vaatech/test/docker/mysql/MySQLContainerConfiguration.class
+com/github/vaatech/test/docker/mysql/MySQLContainerCustomizer.class
+com/github/vaatech/test/docker/mysql/MySQLProperties.class
+com/github/vaatech/test/docker/mysql/MySQLContainer.class
+META-INF/spring-autoconfigure-metadata.properties
+com/github/vaatech/test/docker/mysql/MySQLContainerDependenciesAutoConfiguration.class

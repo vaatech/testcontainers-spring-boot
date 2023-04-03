@@ -1,0 +1,5 @@
+com/github/vaatech/test/docker/compose/DockerComposeFile.class
+META-INF/spring-configuration-metadata.json
+com/github/vaatech/test/docker/compose/ClasspathScanner.class
+com/github/vaatech/test/docker/compose/DockerComposeConfiguration.class
+META-INF/spring-autoconfigure-metadata.properties

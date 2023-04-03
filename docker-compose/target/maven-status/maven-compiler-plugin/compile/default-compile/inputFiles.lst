@@ -1,0 +1,3 @@
+/home/vasil/projects/aom/testcontainers-spring-boot/docker-compose/src/main/java/com/github/vaatech/test/docker/compose/DockerComposeFile.java
+/home/vasil/projects/aom/testcontainers-spring-boot/docker-compose/src/main/java/com/github/vaatech/test/docker/compose/DockerComposeConfiguration.java
+/home/vasil/projects/aom/testcontainers-spring-boot/docker-compose/src/main/java/com/github/vaatech/test/docker/compose/ClasspathScanner.java
