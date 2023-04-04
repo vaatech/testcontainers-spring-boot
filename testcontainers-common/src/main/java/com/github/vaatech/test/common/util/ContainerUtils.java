@@ -39,29 +39,10 @@ public class ContainerUtils {
   private static DockerImageName setupImage(
       String imageName, CommonContainerProperties properties) {
     DockerImageName image = DockerImageName.parse(imageName);
-    if (properties.getDockerImage() != null && properties.getDockerImage().version() != null) {
-      image = image.withTag(properties.getDockerImage().version());
+    if (properties.getDockerImage() != null && properties.getDockerImage().getVersion() != null) {
+      image = image.withTag(properties.getDockerImage().getVersion());
     }
     return image;
-  }
-
-  public static void logContainerInfo(String name, ContainerState container, Logger logger) {
-    String offset = "";
-    logger.info("%s%s:", offset, name);
-    List<Integer> exposedPorts = new ArrayList<>(container.getExposedPorts());
-    exposedPorts.sort(Comparator.naturalOrder());
-
-    offset += "\t";
-    logger.info("%sHost: %s", offset, container.getHost());
-    if (!exposedPorts.isEmpty()) {
-      logger.info("%sPorts:", offset);
-    }
-
-    offset += "\t";
-    for (Integer port : exposedPorts) {
-      Integer mappedPort = container.getMappedPort(port);
-      logger.info("%s%s -> %s", offset, port, Objects.toString(mappedPort, "NONE"));
-    }
   }
 
   public static Consumer<OutputFrame> containerLogsConsumer(Logger log) {

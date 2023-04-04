@@ -1,33 +1,23 @@
 package com.github.vaatech.test.database.common;
 
 import com.github.vaatech.test.common.properties.CommonContainerProperties;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = true)
 public abstract class CommonContainerDatabaseProperties extends CommonContainerProperties {
 
-  protected ConnectionInfo connectionInfo;
+  public static final String DEFAULT_USERNAME = "test";
+  public static final String DEFAULT_PASSWORD = "test";
+  public static final String DEFAULT_DATABASE = "test_db";
+  public static final String DEFAULT_HOST = "localhost";
 
-  public record ConnectionInfo(
-      String username, String password, String database, String host, Integer... exposedPorts) {
-    public ConnectionInfo {
-      if (username == null || username.isBlank()) {
-        username = "test";
-      }
-      if (password == null || password.isBlank()) {
-        password = "test";
-      }
-      if (database == null || database.isBlank()) {
-        database = "test_db";
-      }
-      if (host == null || host.isBlank()) {
-        host = "localhost";
-      }
-      if (exposedPorts == null || exposedPorts.length == 0) {
-        exposedPorts = new Integer[0];
-      }
-    }
-  }
+  private String host = DEFAULT_HOST;
+  private String database = DEFAULT_DATABASE;
+  private String username = DEFAULT_USERNAME;
+  private String password = DEFAULT_PASSWORD;
+  private Integer[] exposedPorts = new Integer[] {3306};
+
+  private String initScriptPath;
 }

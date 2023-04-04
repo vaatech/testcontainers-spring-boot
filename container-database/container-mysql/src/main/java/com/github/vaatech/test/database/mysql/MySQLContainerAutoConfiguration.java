@@ -37,12 +37,16 @@ public class MySQLContainerAutoConfiguration {
     MySQLContainer<?> mysql =
         new MySQLContainer<>(ContainerUtils.getDockerImageName(properties))
             .withEnv("MYSQL_ALLOW_EMPTY_PASSWORD", "yes")
-            .withExposedPorts(properties.getConnectionInfo().exposedPorts())
-            .withUsername(properties.getConnectionInfo().username())
-            .withPassword(properties.getConnectionInfo().password())
+            .withUsername(properties.getUsername())
+            .withPassword(properties.getPassword())
+            .withDatabaseName(properties.getDatabase())
+            .withExposedPorts(properties.getExposedPorts())
+            .withCommand(
+                "--character-set-server=" + properties.getEncoding(),
+                "--collation-server=" + properties.getCollation())
             .withLogConsumer(
                 ContainerUtils.containerLogsConsumer(LogManager.getLogger("container-mysql")))
-            .withDatabaseName(properties.getConnectionInfo().database());
+            .withInitScript(properties.getInitScriptPath());
 
     network.ifPresent(mysql::withNetwork);
 
@@ -52,20 +56,4 @@ public class MySQLContainerAutoConfiguration {
 
     return new MySQLContainerDecorator(mysql);
   }
-
-  //  @Bean
-  //  public MySQLContainerCustomizer mySQLContainerLogConsumer() {
-  //    return (container) ->
-  //        container
-  //  }
-
-  //  @Bean
-  //  public MySQLContainerCustomizer mySQLContainerCreateDatabaseIfNotExists() {
-  //    return (container) -> container.withUrlParam("createDatabaseIfNotExist", "true");
-  //  }
-
-  //  @Bean
-  //  public MySQLContainerCustomizer mySQLContainerWaitStrategyCustomizer() {
-  //    return (container) -> container.waitingFor(Wait.forHealthcheck());
-  //  }
 }

@@ -22,6 +22,7 @@
     <modules>
         <module>container-mysql</module>
         <module>container-database-common</module>
+        <module>container-postgresql</module>
     </modules>
 
     <dependencyManagement>

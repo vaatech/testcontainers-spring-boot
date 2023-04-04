@@ -1,30 +1,50 @@
 package com.github.vaatech.test.common.properties;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import org.testcontainers.utility.DockerImageName;
 
 @Data
 public abstract class CommonContainerProperties {
+
   private DockerImage dockerImage;
 
   public abstract DockerImage getDefaultDockerImage();
 
-  public record DockerImage(String registry, String name, String version) {
+  public static class DockerImage {
 
-    public DockerImage {
-      if (name == null || name.isBlank()) {
-        throw new IllegalArgumentException("Name cannot be blank.");
-      }
-      if (version != null && version.isBlank()) {
-        throw new IllegalArgumentException("Version cannot be blank.");
-      }
+    private final DockerImageName dockerImageName;
+
+    private final String registry;
+    private final String name;
+    private final String version;
+
+    public DockerImage(String name) {
+      var dockerImageName = DockerImageName.parse(name);
+
+      this.dockerImageName = dockerImageName;
+      this.registry = dockerImageName.getRegistry();
+      this.name = dockerImageName.getUnversionedPart();
+      this.version = dockerImageName.getVersionPart();
+    }
+
+    public String getRegistry() {
+      return registry;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public String getVersion() {
+      return version;
     }
 
     public String fullImageName() {
-      if (registry == null || registry.isBlank()) return String.format("%s:%s", name, version);
-      return String.format("%s/%s:%s", registry, name, version);
+      return dockerImageName.asCanonicalNameString();
+    }
+
+    public static DockerImage create(String name) {
+      return new DockerImage(name);
     }
   }
 }
