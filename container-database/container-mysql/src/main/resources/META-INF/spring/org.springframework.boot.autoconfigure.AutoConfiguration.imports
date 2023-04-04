@@ -1,2 +1,2 @@
-com.github.vaatech.test.docker.mysql.MySQLContainerConfiguration
-com.github.vaatech.test.docker.mysql.MySQLContainerDependenciesAutoConfiguration
+com.github.vaatech.test.database.mysql.MySQLContainerAutoConfiguration
+com.github.vaatech.test.database.mysql.MySQLContainerDependenciesAutoConfiguration

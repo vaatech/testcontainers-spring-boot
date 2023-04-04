@@ -1,2 +1,2 @@
-com.github.vaatech.test.docker.common.spring.DockerContainersConfiguration
-com.github.vaatech.test.docker.common.spring.DockerPresenceAutoConfiguration
+com.github.vaatech.test.common.spring.DockerEnvironmentAutoConfiguration
+com.github.vaatech.test.common.spring.DockerPresenceAutoConfiguration

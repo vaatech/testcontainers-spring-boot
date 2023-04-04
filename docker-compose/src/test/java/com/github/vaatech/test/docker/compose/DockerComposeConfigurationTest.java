@@ -1,6 +1,6 @@
 package com.github.vaatech.test.docker.compose;
 
-import com.github.vaatech.test.docker.common.spring.DockerContainer;
+import com.github.vaatech.test.common.spring.DockerContainer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

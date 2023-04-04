@@ -25,6 +25,14 @@
             <artifactId>testcontainers-common</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.github.vaatech</groupId>
+            <artifactId>container-database-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mysql</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>jdbc</artifactId>
         </dependency>
@@ -34,7 +42,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>   mysql</groupId>
+            <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-driver.version}</version>
             <scope>test</scope>

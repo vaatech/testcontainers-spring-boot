@@ -21,6 +21,17 @@
 
     <modules>
         <module>container-mysql</module>
+        <module>container-database-common</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.vaatech</groupId>
+                <artifactId>container-database-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

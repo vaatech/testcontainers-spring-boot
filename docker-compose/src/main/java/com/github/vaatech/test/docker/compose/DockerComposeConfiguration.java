@@ -1,6 +1,6 @@
 package com.github.vaatech.test.docker.compose;
 
-import com.github.vaatech.test.docker.common.spring.DockerPresenceAutoConfiguration;
+import com.github.vaatech.test.common.spring.DockerPresenceAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
