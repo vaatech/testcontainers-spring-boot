@@ -1,5 +1,7 @@
 package com.github.vaatech.test.database.postgresql;
 
+import com.github.vaatech.test.common.spring.ContainerCustomizer;
+import com.github.vaatech.test.common.spring.CustomizableContainer;
 import com.github.vaatech.test.common.spring.DockerContainer;
 import com.github.vaatech.test.common.spring.DockerPresenceAutoConfiguration;
 import com.github.vaatech.test.common.util.ContainerUtils;
@@ -24,14 +26,13 @@ import static java.util.Collections.emptyList;
 @AutoConfiguration(after = {DockerPresenceAutoConfiguration.class})
 @ConditionalOnProperty(name = "container.postgresql.enabled", matchIfMissing = true)
 @EnableConfigurationProperties(PostgreSQLProperties.class)
-public class PostgreSQLContainerAutoConfiguration {
+public class PostgreSQLContainerAutoConfiguration
+    implements CustomizableContainer<PostgreSQLContainer<?>> {
+  private List<ContainerCustomizer<PostgreSQLContainer<?>>> containerCustomizers = emptyList();
 
   @SuppressWarnings("resource")
   @Bean(name = BEAN_NAME_CONTAINER_POSTGRESQL, destroyMethod = "stop")
-  public DockerContainer postgresql(
-      PostgreSQLProperties properties,
-      ObjectProvider<List<PostgreSQLContainerCustomizer>> containerCustomizers,
-      Optional<Network> network) {
+  public DockerContainer postgresql(PostgreSQLProperties properties, Optional<Network> network) {
 
     PostgreSQLContainer<?> postgresql =
         new PostgreSQLContainer<>(ContainerUtils.getDockerImageName(properties))
@@ -42,10 +43,14 @@ public class PostgreSQLContainerAutoConfiguration {
 
     network.ifPresent(postgresql::withNetwork);
 
-    Optional.ofNullable(containerCustomizers.getIfAvailable())
-        .orElse(emptyList())
-        .forEach(customizer -> customizer.customize(postgresql));
+    containerCustomizers.forEach(customizer -> customizer.customize(postgresql));
 
     return new PostgreSQLContainerDecorator(postgresql);
+  }
+
+  @Override
+  public void setCustomizers(
+      List<ContainerCustomizer<PostgreSQLContainer<?>>> containerCustomizers) {
+    this.containerCustomizers = containerCustomizers;
   }
 }

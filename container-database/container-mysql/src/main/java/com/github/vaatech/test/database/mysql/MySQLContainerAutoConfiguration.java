@@ -1,10 +1,12 @@
 package com.github.vaatech.test.database.mysql;
 
+import com.github.vaatech.test.common.spring.ContainerCustomizer;
+import com.github.vaatech.test.common.spring.CustomizableContainer;
 import com.github.vaatech.test.common.spring.DockerContainer;
 import com.github.vaatech.test.common.spring.DockerPresenceAutoConfiguration;
 import com.github.vaatech.test.common.util.ContainerUtils;
 import org.apache.logging.log4j.LogManager;
-import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,15 +26,14 @@ import static java.util.Collections.emptyList;
 @ConditionalOnExpression("${containers.enabled:true}")
 @ConditionalOnProperty(name = "container.mysql.enabled", matchIfMissing = true)
 @EnableConfigurationProperties(MySQLProperties.class)
-public class MySQLContainerAutoConfiguration {
+public class MySQLContainerAutoConfiguration implements CustomizableContainer<MySQLContainer<?>> {
+
+  private List<ContainerCustomizer<MySQLContainer<?>>> containerCustomizers = emptyList();
 
   @SuppressWarnings("resource")
   @Bean(name = BEAN_NAME_CONTAINER_MYSQL, destroyMethod = "stop")
   @ConditionalOnMissingBean(name = BEAN_NAME_CONTAINER_MYSQL)
-  public DockerContainer mysql(
-      MySQLProperties properties,
-      ObjectProvider<List<MySQLContainerCustomizer>> containerCustomizers,
-      Optional<Network> network) {
+  public DockerContainer mysql(MySQLProperties properties, Optional<Network> network) {
 
     MySQLContainer<?> mysql =
         new MySQLContainer<>(ContainerUtils.getDockerImageName(properties))
@@ -50,10 +51,14 @@ public class MySQLContainerAutoConfiguration {
 
     network.ifPresent(mysql::withNetwork);
 
-    Optional.ofNullable(containerCustomizers.getIfAvailable())
-        .orElse(emptyList())
-        .forEach(customizer -> customizer.customize(mysql));
+    containerCustomizers.forEach(customizer -> customizer.customize(mysql));
 
     return new MySQLContainerDecorator(mysql);
+  }
+
+  @Override
+  @Autowired(required = false)
+  public void setCustomizers(List<ContainerCustomizer<MySQLContainer<?>>> containerCustomizers) {
+    this.containerCustomizers = containerCustomizers;
   }
 }

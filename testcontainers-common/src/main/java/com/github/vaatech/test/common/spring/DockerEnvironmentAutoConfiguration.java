@@ -16,8 +16,11 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.testcontainers.containers.ContainerState;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
+import org.testcontainers.shaded.com.github.dockerjava.core.command.CreateContainerCmdImpl;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
@@ -38,40 +41,47 @@ public class DockerEnvironmentAutoConfiguration {
 
   private final ConfigurableEnvironment environment;
 
+  private List<DockerContainer> containers = Collections.emptyList();
+
   public DockerEnvironmentAutoConfiguration(ConfigurableEnvironment environment) {
     this.environment = environment;
   }
 
-  @Bean
-  @ConditionalOnMissingBean(Network.class)
-  public Network network() {
-    Network network = Network.newNetwork();
-    log.info("Created docker Network with id={}", network.getId());
-    return network;
+  @Configuration(proxyBeanMethods = false)
+  static class NetworkConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean(Network.class)
+    public Network network() {
+      Network network = Network.newNetwork();
+      log.info("Created docker Network with id={}", network.getId());
+      return network;
+    }
   }
 
   @Bean(name = DOCKER_ENVIRONMENT)
-  public DockerEnvironment dockerContainers(ObjectProvider<DockerContainer[]> containersProvider)
-      throws Exception {
+  public DockerEnvironment dockerContainers() throws Exception {
 
-    var containers =
-        Optional.ofNullable(containersProvider.getIfAvailable()).orElse(new DockerContainer[0]);
-
-    if (containers.length == 0) {
+    if (containers.size() == 0) {
       return new DockerEnvironment(false, new GenericContainer<?>[0]);
     }
 
-    Arrays.stream(containers).forEach(c -> c.setEnvironment(environment));
+    containers.forEach(c -> c.setEnvironment(environment));
 
-    ContainerUtils.run(containers);
+    ContainerUtils.run(containers.toArray(new DockerContainer[0]));
     //    Callable<Boolean> allHealthy =
     //        () -> Arrays.stream(containers).allMatch(ContainerState::isHealthy);
     //    await().atMost(30, SECONDS).pollInterval(500, MICROSECONDS).until(allHealthy);
 
-    Arrays.stream(containers).forEach(c -> ContainerUtils.logContainerInfo(c.name(), c, LOGGER));
+    containers.forEach(DockerContainer::logInfo);
 
     return new DockerEnvironment(
         /*allHealthy.call()*/ true,
-        Arrays.stream(containers).map(DockerContainer::unwrap).toArray(GenericContainer<?>[]::new));
+        containers.stream().map(DockerContainer::unwrap).toArray(GenericContainer<?>[]::new));
+  }
+
+  @Autowired(required = false)
+  void setContainers(List<DockerContainer> containers) {
+    this.containers = containers;
   }
 }

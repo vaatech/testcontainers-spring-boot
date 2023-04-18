@@ -1,5 +1,6 @@
 package com.github.vaatech.test.database.mysql;
 
+import com.github.vaatech.test.common.spring.DockerContainer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
@@ -17,6 +20,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.utility.DockerImageName;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 import static com.github.vaatech.test.common.spring.DockerEnvironmentAutoConfiguration.DOCKER_ENVIRONMENT;
 import static java.util.Arrays.asList;
@@ -103,9 +107,43 @@ public class MySQLContainerAutoConfigurationTest {
   @TestPropertySource(properties = {"container.mysql.docker-image.name=mysql:5.7.34"})
   @Nested
   @DisplayName("AutoConfigured Datasource with mysql:5.7.34")
-  class Mysql5Image extends DefaultTests {}
+  class MySQL5Image extends DefaultTests {}
+
+  @Nested
+  @DisplayName("AutoConfigured Datasource with Customizers")
+  @Import(TestConfigurationWithCustomizedMySQLContainer.class)
+  @SpringBootTest(
+      classes = {MySQLContainerAutoConfigurationTest.TestConfiguration.class},
+      properties = {"spring.profiles.active=enabled"})
+  class MySQLCustomizerTest {
+
+    @Autowired List<MySQLContainerCustomizer> mySQLContainerCustomizerList;
+
+    @Autowired DockerContainer containerMySQL;
+
+    @Test
+    void shouldHaveCustomizer() {
+      assertThat(mySQLContainerCustomizerList).hasSize(2);
+      assertThat(containerMySQL.unwrap().getEnvMap().containsKey("CUSTOMIZED_ENV01")).isTrue();
+      assertThat(containerMySQL.unwrap().getEnvMap().containsKey("CUSTOMIZED_ENV02")).isTrue();
+    }
+  }
 
   @Configuration
   @EnableAutoConfiguration
   static class TestConfiguration {}
+
+  @Configuration
+  @EnableAutoConfiguration
+  static class TestConfigurationWithCustomizedMySQLContainer {
+    @Bean
+    public MySQLContainerCustomizer mySQLContainerCustomizerEnv01() {
+      return container -> container.withEnv("CUSTOMIZED_ENV01", "CUSTOMIZED_VALUE01");
+    }
+
+    @Bean
+    public MySQLContainerCustomizer mySQLContainerCustomizerEnv02() {
+      return container -> container.withEnv("CUSTOMIZED_ENV02", "CUSTOMIZED_VALUE02");
+    }
+  }
 }

@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @EqualsAndHashCode(callSuper = true)
 @ConfigurationProperties("container.postgresql")
 public class PostgreSQLProperties extends CommonContainerDatabaseProperties {
-  static final String BEAN_NAME_CONTAINER_POSTGRESQL = "containerPostgreSql";
+ public static final String BEAN_NAME_CONTAINER_POSTGRESQL = "containerPostgreSql";
 
   @Override
   public DockerImage getDefaultDockerImage() {
