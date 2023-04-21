@@ -15,7 +15,6 @@
         <module>testcontainers-spring-boot-parent</module>
         <module>testcontainers-common</module>
         <module>container-database</module>
-        <module>docker-compose</module>
     </modules>
 
     <properties>
