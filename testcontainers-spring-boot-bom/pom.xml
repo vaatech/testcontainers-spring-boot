@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>testcontainers-spring-boot</artifactId>
-        <groupId>com.github.vaatech</groupId>
+        <groupId>io.github.vaatech.testcontainers</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -15,13 +15,8 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.github.vaatech</groupId>
-                <artifactId>testcontainers-common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.vaatech</groupId>
-                <artifactId>container-mysql</artifactId>
+                <groupId>io.github.vaatech.testcontainers</groupId>
+                <artifactId>testcontainers-spring-boot-autoconfigurer</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
