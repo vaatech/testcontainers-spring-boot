@@ -8,7 +8,6 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +36,6 @@ public class MySQLContainerAutoConfiguration {
     }
 
     @Bean(name = MySQLProperties.BEAN_NAME_CONTAINER_MYSQL, destroyMethod = "stop")
-    @ConditionalOnMissingBean(name = MySQLProperties.BEAN_NAME_CONTAINER_MYSQL)
     public MySQLContainer<?> mysql(MySQLProperties properties,
                                    MySQLContainerCustomizers customizers) {
 

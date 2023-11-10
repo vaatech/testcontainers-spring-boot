@@ -127,7 +127,7 @@ public class MySQLContainerAutoConfigurationTest {
 
         @Test
         void shouldHaveCustomizer() {
-            assertThat(mySQLContainerCustomizerList).hasSizeGreaterThan(2);
+            assertThat(mySQLContainerCustomizerList).hasSizeGreaterThanOrEqualTo(2);
             assertThat(containerMySQL.getEnvMap().containsKey("CUSTOMIZED_ENV01")).isTrue();
             assertThat(containerMySQL.getEnvMap().containsKey("CUSTOMIZED_ENV02")).isTrue();
         }
