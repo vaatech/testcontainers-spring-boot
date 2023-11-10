@@ -7,14 +7,15 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
 import org.springframework.core.Ordered;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.testcontainers.containers.Container;
 import org.testcontainers.containers.ContainerState;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Configuration(proxyBeanMethods = false)
@@ -36,15 +37,6 @@ public class TestcontainersEnvironmentAutoConfiguration {
         }
     }
 
-
-    @Bean
-    @Scope("prototype")
-    public <C extends Container<?>> ContainerBuilder<C> baseContainerBuilder(final DynamicPropertyRegistry registry,
-                                                                             final Network network) {
-        return ContainerBuilder.from(network, registry);
-    }
-
-    @Primary
     @Bean(name = TESTCONTAINERS_ENVIRONMENT)
     public TestcontainersEnvironment testcontainersEnvironment(ObjectProvider<GenericContainer<?>> containerProvider,
                                                                final Network network) {
@@ -55,10 +47,27 @@ public class TestcontainersEnvironmentAutoConfiguration {
 
         return new TestcontainersEnvironment(containers, network, (containerStates) -> {
             for (ContainerState containerState : containerStates) {
-                var healthy = containerState.isRunning();
-                var id = containerState.getContainerId();
-                int a = 5;
+                logContainerInfo(containerState.getContainerId(), (GenericContainer<?>) containerState);
             }
         });
+    }
+
+    private static void logContainerInfo(String name, GenericContainer<?> container) {
+        String offset = "";
+        log.info("{}{}:", offset, name);
+        List<Integer> exposedPorts = new ArrayList<>(container.getExposedPorts());
+        exposedPorts.sort(Comparator.naturalOrder());
+
+        offset += "\t";
+        log.info("{}Host: {}", offset, container.getHost());
+        if (!exposedPorts.isEmpty()) {
+            log.info("{}Ports:", offset);
+        }
+
+        offset += "\t";
+        for (Integer port : exposedPorts) {
+            Integer mappedPort = container.getMappedPort(port);
+            log.info("{}{} -> {}", offset, port, Objects.toString(mappedPort, "NONE"));
+        }
     }
 }

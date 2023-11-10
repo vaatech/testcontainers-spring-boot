@@ -36,8 +36,7 @@ public class ContainerUtils {
         return customImage.asCompatibleSubstituteFor(defaultImage);
     }
 
-    private static DockerImageName setupImage(
-            String imageName, CommonContainerProperties properties) {
+    private static DockerImageName setupImage(String imageName, CommonContainerProperties properties) {
         DockerImageName image = DockerImageName.parse(imageName);
         if (properties.getDockerImage() != null && properties.getDockerImage().getVersion() != null) {
             image = image.withTag(properties.getDockerImage().getVersion());

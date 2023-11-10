@@ -1,4 +1,4 @@
-package io.github.vaatech.testcontainers.common.spring;
+package io.github.vaatech.testcontainers;
 
 import io.github.vaatech.testcontainers.TestcontainersEnvironment;
 import io.github.vaatech.testcontainers.TestcontainersEnvironmentAutoConfiguration;
@@ -20,9 +20,6 @@ public class DisableTestcontainersTest {
                 .withPropertyValues("containers.enabled=false")
                 .run((context) -> assertThat(context)
                         .hasNotFailed()
-                        .doesNotHaveBean(TestcontainersEnvironment.class)
-                        .doesNotHaveBean("containerDependsOnDockerPostProcessor")
-                        .doesNotHaveBean("networkDependsOnDockerPostProcessor")
-                        .doesNotHaveBean("dockerContainerDependsOnDockerPostProcessor"));
+                        .doesNotHaveBean(TestcontainersEnvironment.class));
     }
 }

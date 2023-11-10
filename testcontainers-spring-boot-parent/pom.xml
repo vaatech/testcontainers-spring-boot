@@ -20,7 +20,6 @@
 
         <testcontainers.version>1.19.1</testcontainers.version>
         <spring.boot.version>3.1.2</spring.boot.version>
-        <junit-jupiter.version>5.9.2</junit-jupiter.version>
     </properties>
 
     <dependencyManagement>
@@ -31,6 +30,11 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.github.vaatech.testcontainers</groupId>
+                <artifactId>testcontainers-spring-boot-autoconfigure</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

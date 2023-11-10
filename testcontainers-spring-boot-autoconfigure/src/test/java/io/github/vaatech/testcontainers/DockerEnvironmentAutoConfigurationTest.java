@@ -1,4 +1,4 @@
-package io.github.vaatech.testcontainers.common.spring;
+package io.github.vaatech.testcontainers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
 
@@ -31,6 +32,7 @@ public class DockerEnvironmentAutoConfigurationTest {
 
     @EnableAutoConfiguration
     @Configuration
+    @ComponentScan(basePackages = "io.github.vaatech.testcontainers")
     static class TestConfiguration {
     }
 }

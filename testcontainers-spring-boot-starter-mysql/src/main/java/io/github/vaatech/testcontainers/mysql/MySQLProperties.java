@@ -1,13 +1,16 @@
-package io.github.vaatech.testcontainers.properties.jdbc;
+package io.github.vaatech.testcontainers.mysql;
 
 import io.github.vaatech.testcontainers.properties.CommonContainerProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public abstract class CommonJdbcContainerProperties extends CommonContainerProperties {
+@ConfigurationProperties("container.mysql")
+public class MySQLProperties extends CommonContainerProperties {
 
+    public static final String BEAN_NAME_CONTAINER_MYSQL = "containerMySQL";
     public static final String DEFAULT_USERNAME = "test";
     public static final String DEFAULT_PASSWORD = "test";
     public static final String DEFAULT_DATABASE = "test_db";
@@ -20,4 +23,11 @@ public abstract class CommonJdbcContainerProperties extends CommonContainerPrope
     private Integer[] exposedPorts = new Integer[]{3306};
 
     private String initScriptPath;
+    private String encoding = "utf8mb4";
+    private String collation = "utf8mb4_unicode_ci";
+
+    @Override
+    public DockerImage getDefaultDockerImage() {
+        return DockerImage.create("mysql:8.0-debian");
+    }
 }

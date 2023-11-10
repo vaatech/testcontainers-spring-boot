@@ -1,1 +1,1 @@
-io.github.vaatech.testcontainers.common.spring.EchoContainersAutoConfiguration
+io.github.vaatech.testcontainers.EchoContainersAutoConfiguration
