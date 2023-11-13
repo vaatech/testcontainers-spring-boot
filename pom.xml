@@ -17,6 +17,7 @@
         <module>testcontainers-spring-boot-starter</module>
         <module>testcontainers-spring-boot-starter-mysql</module>
         <module>testcontainers-spring-boot-starter-artemis</module>
+        <module>testcontainers-spring-boot-starter-toxiproxy</module>
     </modules>
 
     <properties>
