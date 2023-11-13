@@ -15,9 +15,10 @@
         <module>testcontainers-spring-boot-parent</module>
         <module>testcontainers-spring-boot-autoconfigure</module>
         <module>testcontainers-spring-boot-starter</module>
-        <module>testcontainers-spring-boot-starter-mysql</module>
         <module>testcontainers-spring-boot-starter-artemis</module>
+        <module>testcontainers-spring-boot-starter-mysql</module>
         <module>testcontainers-spring-boot-starter-toxiproxy</module>
+        <module>testcontainers-spring-boot-starter-wiremock</module>
     </modules>
 
     <properties>
