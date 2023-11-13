@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 import static io.github.vaatech.testcontainers.artemis.ArtemisProperties.BEAN_NAME_CONTAINER_ARTEMIS;
 
@@ -39,6 +40,7 @@ public class ArtemisContainerAutoConfiguration {
     }
 
     @Bean
+    @Order(0)
     ArtemisContainerCustomizer standardArtemisContainerCustomizer(ArtemisProperties properties) {
         return container -> container
                 .withUser(properties.getUsername())
