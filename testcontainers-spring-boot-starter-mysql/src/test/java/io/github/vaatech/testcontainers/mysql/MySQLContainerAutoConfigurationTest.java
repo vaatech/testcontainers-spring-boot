@@ -33,8 +33,7 @@ public class MySQLContainerAutoConfigurationTest {
             classes = {MySQLContainerAutoConfigurationTest.TestConfiguration.class},
             properties = {
                     "spring.profiles.active=enabled",
-                    "container.mysql.docker-image.name=mysql:8.0.32",
-                    "containers.toxiproxy.enabled=true"
+                    "container.mysql.docker-image.name=mysql:8.0.32"
             })
     @DisplayName("Default AutoConfigured Datasource")
     @Nested
