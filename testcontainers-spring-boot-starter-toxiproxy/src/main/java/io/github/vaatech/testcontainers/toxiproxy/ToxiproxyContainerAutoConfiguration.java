@@ -2,7 +2,7 @@ package io.github.vaatech.testcontainers.toxiproxy;
 
 
 import io.github.vaatech.testcontainers.ContainerCustomizers;
-import io.github.vaatech.testcontainers.util.ContainerUtils;
+import io.github.vaatech.testcontainers.GenericContainerFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.annotation.Order;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.testcontainers.containers.Network;
@@ -41,7 +42,11 @@ public class ToxiproxyContainerAutoConfiguration {
     @Bean(name = BEAN_NAME_CONTAINER_TOXIPOROXY, destroyMethod = "stop")
     ToxiproxyContainer toxiproxy(ToxiproxyProperties toxiProxyProperties,
                                  ToxiproxyContainerCustomizers toxiProxyContainerCustomizers) {
-        ToxiproxyContainer toxiproxyContainer = new ToxiproxyContainer(ContainerUtils.getDockerImageName(toxiProxyProperties));
+        ToxiproxyContainer toxiproxyContainer = GenericContainerFactory.getGenericContainer(
+                toxiProxyProperties,
+                new ParameterizedTypeReference<>() {},
+                LoggerFactory.getLogger("container-toxiproxy")
+        );
         return toxiProxyContainerCustomizers.customize(toxiproxyContainer);
     }
 
@@ -53,8 +58,7 @@ public class ToxiproxyContainerAutoConfiguration {
 
             container
                     .withNetwork(network)
-                    .withNetworkAliases(TOXIPROXY_NETWORK_ALIAS, TOXIPROXY_NETWORK_ALIAS_OLD)
-                    .withLogConsumer(ContainerUtils.containerLogsConsumer(LoggerFactory.getLogger("container-toxiproxy")));
+                    .withNetworkAliases(TOXIPROXY_NETWORK_ALIAS, TOXIPROXY_NETWORK_ALIAS_OLD);
 
             registry.add("container.toxiproxy.host", container::getHost);
             registry.add("container.toxiproxy.controlPort", container::getControlPort);

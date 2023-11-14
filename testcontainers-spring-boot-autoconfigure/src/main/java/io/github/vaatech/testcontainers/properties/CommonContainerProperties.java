@@ -4,11 +4,22 @@ import lombok.Data;
 import lombok.Getter;
 import org.testcontainers.utility.DockerImageName;
 
+import java.time.Duration;
+
 @Data
 public abstract class CommonContainerProperties {
 
     private DockerImage dockerImage;
 
+    private long waitTimeoutInSeconds = 60;
+
+    private boolean reuseContainer = false;
+
+    private boolean usePullAlwaysPolicy = false;
+
+    public Duration getTimeoutDuration() {
+        return Duration.ofSeconds(waitTimeoutInSeconds);
+    }
 
     public abstract DockerImage getDefaultDockerImage();
 

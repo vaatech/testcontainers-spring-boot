@@ -2,7 +2,7 @@ package io.github.vaatech.testcontainers.artemis;
 
 import io.github.vaatech.testcontainers.ContainerCustomizers;
 import io.github.vaatech.testcontainers.DependsOnPostProcessor;
-import io.github.vaatech.testcontainers.util.ContainerUtils;
+import io.github.vaatech.testcontainers.GenericContainerFactory;
 import jakarta.jms.ConnectionFactory;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.annotation.Order;
 
 import static io.github.vaatech.testcontainers.artemis.ArtemisProperties.BEAN_NAME_CONTAINER_ARTEMIS;
@@ -35,7 +36,12 @@ public class ArtemisContainerAutoConfiguration {
     ArtemisContainer artemisContainer(ArtemisProperties artemisProperties,
                                       ArtemisContainerCustomizers customizers) {
 
-        ArtemisContainer container = new ArtemisContainer(ContainerUtils.getDockerImageName(artemisProperties));
+        ArtemisContainer container = GenericContainerFactory.getGenericContainer(
+                artemisProperties,
+                new ParameterizedTypeReference<>() {},
+                LoggerFactory.getLogger("container-artemis")
+        );
+
         return customizers.customize(container);
     }
 
@@ -45,8 +51,7 @@ public class ArtemisContainerAutoConfiguration {
         return container -> container
                 .withUser(properties.getUsername())
                 .withPassword(properties.getPassword())
-                .withAnonymousLogin(properties.isAllowAnonymousLogin())
-                .withLogConsumer(ContainerUtils.containerLogsConsumer(LoggerFactory.getLogger("container-artemis")));
+                .withAnonymousLogin(properties.isAllowAnonymousLogin());
     }
 
     @Bean

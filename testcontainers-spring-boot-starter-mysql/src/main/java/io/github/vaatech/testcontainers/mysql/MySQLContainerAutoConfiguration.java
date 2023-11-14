@@ -2,7 +2,7 @@ package io.github.vaatech.testcontainers.mysql;
 
 import io.github.vaatech.testcontainers.ContainerCustomizers;
 import io.github.vaatech.testcontainers.DependsOnPostProcessor;
-import io.github.vaatech.testcontainers.util.ContainerUtils;
+import io.github.vaatech.testcontainers.GenericContainerFactory;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -13,6 +13,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.testcontainers.containers.MySQLContainer;
 
@@ -39,7 +40,12 @@ public class MySQLContainerAutoConfiguration {
     public MySQLContainer<?> mysql(MySQLProperties properties,
                                    MySQLContainerCustomizers customizers) {
 
-        MySQLContainer<?> mysql = new MySQLContainer<>(ContainerUtils.getDockerImageName(properties));
+        MySQLContainer<?> mysql = GenericContainerFactory.getGenericContainer(
+                properties,
+                new ParameterizedTypeReference<>() {},
+                LoggerFactory.getLogger("container-mysql")
+        );
+
         return customizers.customize(mysql);
     }
 
@@ -83,8 +89,7 @@ public class MySQLContainerAutoConfiguration {
                     .withUsername(properties.getUsername())
                     .withPassword(properties.getPassword())
                     .withDatabaseName(properties.getDatabase())
-                    .withExposedPorts(properties.getExposedPorts())
-                    .withLogConsumer(ContainerUtils.containerLogsConsumer(LoggerFactory.getLogger("container-mysql")));
+                    .withExposedPorts(properties.getExposedPorts());
 
             registry.add("container.mysql.port", () -> container.getMappedPort(MySQLContainer.MYSQL_PORT));
             registry.add("container.mysql.host", container::getHost);
