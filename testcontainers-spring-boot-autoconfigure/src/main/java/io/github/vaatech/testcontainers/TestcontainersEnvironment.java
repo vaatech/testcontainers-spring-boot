@@ -3,6 +3,7 @@ package io.github.vaatech.testcontainers;
 import com.github.dockerjava.api.command.InspectImageResponse;
 import com.github.dockerjava.api.exception.NotFoundException;
 import io.github.vaatech.testcontainers.util.DateUtils;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.testcontainers.containers.ContainerState;
@@ -13,21 +14,13 @@ import org.testcontainers.lifecycle.Startables;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 
 @Slf4j
-public class TestcontainersEnvironment {
-    private final GenericContainer<?>[] containers;
-    private final Network network;
-    private final Consumer<ContainerState[]> callback;
-
-    public TestcontainersEnvironment(GenericContainer<?>[] containers, Network network, Consumer<ContainerState[]> callback) {
-        this.containers = containers;
-        this.network = network;
-        this.callback = callback;
-    }
+@Getter
+public record TestcontainersEnvironment(GenericContainer<?>[] containers,
+                                        Network network) {
 
     public void run() {
 
@@ -37,7 +30,28 @@ public class TestcontainersEnvironment {
             throw new RuntimeException(e);
         }
 
-        callback.accept(containers);
+        for (GenericContainer<?> container : containers) {
+            logContainerInfo(container.getContainerId(), container);
+        }
+    }
+
+    private static void logContainerInfo(String name, GenericContainer<?> container) {
+        String offset = "";
+        log.info("{}{}:", offset, name);
+        List<Integer> exposedPorts = new ArrayList<>(container.getExposedPorts());
+        exposedPorts.sort(Comparator.naturalOrder());
+
+        offset += "\t";
+        log.info("{}Host: {}", offset, container.getHost());
+        if (!exposedPorts.isEmpty()) {
+            log.info("{}Ports:", offset);
+        }
+
+        offset += "\t";
+        for (Integer port : exposedPorts) {
+            Integer mappedPort = container.getMappedPort(port);
+            log.info("{}{} -> {}", offset, port, Objects.toString(mappedPort, "NONE"));
+        }
     }
 
     static class StartableDecorator implements Startable {
