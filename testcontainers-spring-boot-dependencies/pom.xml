@@ -5,19 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>testcontainers-spring-boot-parent</artifactId>
         <groupId>com.github.vaatech.testcontainers</groupId>
+        <artifactId>testcontainers-spring-boot</artifactId>
         <version>${revision}</version>
-        <relativePath>../testcontainers-spring-boot-parent</relativePath>
     </parent>
 
-    <artifactId>testcontainers-spring-boot-autoconfigure</artifactId>
+    <artifactId>testcontainers-spring-boot-dependencies</artifactId>
+    <packaging>pom</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-        </dependency>
-    </dependencies>
+
 
 </project>
