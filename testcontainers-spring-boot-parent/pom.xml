@@ -12,6 +12,9 @@
     </parent>
 
     <packaging>pom</packaging>
+    <modules>
+        <module>../testcontainers-spring-boot-starters/testcontainers-spring-boot-starter-mailpit</module>
+    </modules>
     <artifactId>testcontainers-spring-boot-parent</artifactId>
     <description>Parent pom for all testcontainers</description>
 

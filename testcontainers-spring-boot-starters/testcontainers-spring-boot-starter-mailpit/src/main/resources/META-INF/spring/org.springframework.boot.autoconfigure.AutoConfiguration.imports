@@ -1,0 +1,2 @@
+com.github.vaatech.testcontainers.mailpit.MailPitContainerAutoConfiguration
+com.github.vaatech.testcontainers.mailpit.MailboxAutoConfiguration

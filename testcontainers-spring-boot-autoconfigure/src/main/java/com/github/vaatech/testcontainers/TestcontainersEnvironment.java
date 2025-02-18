@@ -3,13 +3,11 @@ package com.github.vaatech.testcontainers;
 import com.github.dockerjava.api.command.InspectImageResponse;
 import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.vaatech.testcontainers.util.DateUtils;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.lifecycle.Startable;
-import org.testcontainers.lifecycle.Startables;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -19,14 +17,7 @@ import java.util.*;
 public record TestcontainersEnvironment(GenericContainer<?>[] containers,
                                         Network network) {
 
-    public void run() {
-
-        try {
-            Startables.deepStart(Arrays.stream(containers).map(StartableDecorator::new)).join();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
+    public TestcontainersEnvironment {
         for (GenericContainer<?> container : containers) {
             logContainerInfo(container.getContainerId(), container);
         }
@@ -113,6 +104,4 @@ public record TestcontainersEnvironment(GenericContainer<?>[] containers,
         }
 
     }
-
-
 }
