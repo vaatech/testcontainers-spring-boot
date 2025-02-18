@@ -1,3 +1,0 @@
-# Application Context Initializers
-org.springframework.context.ApplicationContextInitializer=\
-com.github.vaatech.testcontainers.TestcontainersLifecycleApplicationContextInitializer

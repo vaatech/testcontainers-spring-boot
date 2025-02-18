@@ -1,2 +1,1 @@
-com.github.vaatech.testcontainers.TestcontainersPropertySourceAutoConfiguration
 com.github.vaatech.testcontainers.TestcontainersEnvironmentAutoConfiguration
