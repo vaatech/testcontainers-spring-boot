@@ -12,7 +12,8 @@ public class TestcontainersConfigurationTest {
     @Test
     public void whenContainersDisabledContextLoads() {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-                .withConfiguration(AutoConfigurations.of(TestcontainersEnvironmentAutoConfiguration.class));
+                .withConfiguration(AutoConfigurations.of(TestcontainersEnvironmentAutoConfiguration.class,
+                        DockerPresenceAutoConfiguration.class));
 
         contextRunner
                 .withPropertyValues("containers.enabled=false")
@@ -25,7 +26,8 @@ public class TestcontainersConfigurationTest {
     @Test
     public void whenContainersEnabledContextLoads() {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-                .withConfiguration(AutoConfigurations.of(TestcontainersEnvironmentAutoConfiguration.class));
+                .withConfiguration(AutoConfigurations.of(TestcontainersEnvironmentAutoConfiguration.class,
+                        DockerPresenceAutoConfiguration.class));
 
         contextRunner
                 .withPropertyValues("containers.enabled=true")

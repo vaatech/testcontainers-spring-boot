@@ -1,13 +1,16 @@
 package com.github.vaatech.testcontainers.mysql;
 
+import com.github.vaatech.testcontainers.ContainerCustomizer;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactoryUtils;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.JdbcConnectionDetails;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,21 +25,21 @@ import org.testcontainers.utility.DockerImageName;
 import javax.sql.DataSource;
 import java.util.List;
 
-import static com.github.vaatech.testcontainers.TestcontainersEnvironmentAutoConfiguration.TESTCONTAINERS_ENVIRONMENT;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 public class MySQLContainerAutoConfigurationTest {
 
+    @Nested
+    @DisplayName("Default AutoConfigured Datasource")
     @SpringBootTest(
             classes = {MySQLContainerAutoConfigurationTest.TestConfiguration.class},
             properties = {
                     "spring.profiles.active=enabled",
-                    "container.mysql.docker-image.name=mysql:8.0.32"
-            })
-    @DisplayName("Default AutoConfigured Datasource")
-    @Nested
+                    "container.mysql.docker-image=mysql:8.0.32"
+            }
+    )
     class DefaultTests {
 
         @Autowired
@@ -52,7 +55,7 @@ public class MySQLContainerAutoConfigurationTest {
         MySQLProperties properties;
 
         @Test
-        public void shouldConnectToMySQL() throws Exception {
+        public void shouldConnectToMySQL() {
             var versionString = jdbcTemplate.queryForObject("select version()", String.class);
 
             var dockerImageVersion =
@@ -100,13 +103,17 @@ public class MySQLContainerAutoConfigurationTest {
             assertThat(beanFactory.getBeanDefinition(beanName).getDependsOn())
                     .isNotNull()
                     .isNotEmpty()
-                    .contains(TESTCONTAINERS_ENVIRONMENT, MySQLProperties.BEAN_NAME_CONTAINER_MYSQL);
+                    .contains(MySQLProperties.BEAN_NAME_CONTAINER_MYSQL);
         }
     }
 
-    @TestPropertySource(properties = {"container.mysql.docker-image.name=mysql:5.7.34"})
     @Nested
     @DisplayName("AutoConfigured Datasource with mysql:5.7.34")
+    @TestPropertySource(
+            properties = {
+                    "container.mysql.docker-image=mysql:5.7.34"
+            }
+    )
     class MySQL5Image extends DefaultTests {
     }
 
@@ -115,11 +122,14 @@ public class MySQLContainerAutoConfigurationTest {
     @Import(TestConfigurationWithCustomizedMySQLContainer.class)
     @SpringBootTest(
             classes = {MySQLContainerAutoConfigurationTest.TestConfiguration.class},
-            properties = {"spring.profiles.active=enabled"})
+            properties = {
+                    "spring.profiles.active=enabled"
+            }
+    )
     class MySQLCustomizerTest {
 
         @Autowired
-        List<MySQLContainerCustomizer> mySQLContainerCustomizerList;
+        List<ContainerCustomizer<MySQLContainer<?>>> mySQLContainerCustomizerList;
 
         @Autowired
         MySQLContainer<?> containerMySQL;
@@ -140,13 +150,14 @@ public class MySQLContainerAutoConfigurationTest {
     @Configuration
     @EnableAutoConfiguration
     static class TestConfigurationWithCustomizedMySQLContainer {
+
         @Bean
-        public MySQLContainerCustomizer mySQLContainerCustomizerEnv01() {
+        public ContainerCustomizer<MySQLContainer<?>> mySQLContainerCustomizerEnv01() {
             return container -> container.withEnv("CUSTOMIZED_ENV01", "CUSTOMIZED_VALUE01");
         }
 
         @Bean
-        public MySQLContainerCustomizer mySQLContainerCustomizerEnv02() {
+        public ContainerCustomizer<MySQLContainer<?>> mySQLContainerCustomizerEnv02() {
             return container -> container.withEnv("CUSTOMIZED_ENV02", "CUSTOMIZED_VALUE02");
         }
     }

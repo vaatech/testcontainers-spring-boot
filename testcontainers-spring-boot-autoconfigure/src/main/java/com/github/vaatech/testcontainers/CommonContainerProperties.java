@@ -1,4 +1,4 @@
-package com.github.vaatech.testcontainers.properties;
+package com.github.vaatech.testcontainers;
 
 import lombok.Data;
 import lombok.Getter;
