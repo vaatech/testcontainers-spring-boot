@@ -1,12 +1,9 @@
 package com.github.vaatech.testcontainers;
 
-import com.github.vaatech.testcontainers.properties.CommonContainerProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.ResolvableType;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.images.PullPolicy;
 import org.testcontainers.utility.DockerImageName;
 
@@ -16,11 +13,9 @@ import java.lang.reflect.InvocationTargetException;
 @Slf4j
 public class GenericContainerFactory {
 
-
     @SuppressWarnings("unchecked")
     public static <C extends GenericContainer<?>> C getGenericContainer(CommonContainerProperties properties,
-                                                                        ParameterizedTypeReference<C> typeReference,
-                                                                        Logger logger) {
+                                                                        ParameterizedTypeReference<C> typeReference) {
 
         try {
             ResolvableType resolvable = ResolvableType.forType(typeReference);
@@ -36,7 +31,6 @@ public class GenericContainerFactory {
             container
                     .withStartupTimeout(properties.getTimeoutDuration())
                     .withReuse(properties.isReuseContainer())
-                    .withLogConsumer(new Slf4jLogConsumer(logger, true))
                     .withImagePullPolicy(properties.isUsePullAlwaysPolicy() ? PullPolicy.alwaysPull() : PullPolicy.defaultPolicy());
 
             return container;

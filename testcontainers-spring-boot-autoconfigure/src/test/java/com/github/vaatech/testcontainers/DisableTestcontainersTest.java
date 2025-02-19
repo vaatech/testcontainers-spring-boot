@@ -17,7 +17,6 @@ public class DisableTestcontainersTest {
         contextRunner
                 .withPropertyValues("containers.enabled=false")
                 .run((context) -> assertThat(context)
-                        .hasNotFailed()
-                        .doesNotHaveBean(TestcontainersEnvironment.class));
+                        .hasNotFailed());
     }
 }

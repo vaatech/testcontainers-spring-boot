@@ -10,6 +10,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.annotation.Order;
+import org.springframework.test.context.DynamicPropertyRegistrar;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.strategy.Wait;
@@ -33,8 +34,7 @@ public class MailPitContainerAutoConfiguration {
         MailPitContainer mailpit = GenericContainerFactory.getGenericContainer(
                 properties,
                 new ParameterizedTypeReference<>() {
-                },
-                LoggerFactory.getLogger("container-mailpit")
+                }
         );
 
         return customizers.customize(mailpit);
@@ -43,7 +43,6 @@ public class MailPitContainerAutoConfiguration {
     @Bean
     @Order(0)
     ContainerCustomizer<MailPitContainer> mailPitContainerCustomizer(final MailPitProperties properties,
-                                                                     final DynamicPropertyRegistry registry,
                                                                      final Optional<Network> network) {
         return mailpit -> {
             if (properties.isVerbose()) {
@@ -56,12 +55,6 @@ public class MailPitContainerAutoConfiguration {
             mailpit.withNetworkAliases(MAILPIT_NETWORK_ALIAS);
 
             network.ifPresent(mailpit::withNetwork);
-
-            registry.add("container.mailpit.host", mailpit::getHost);
-            registry.add("container.mailpit.port-http", () -> mailpit.getMappedPort(properties.getPortHttp()));
-            registry.add("container.mailpit.port-smtp", () -> mailpit.getMappedPort(properties.getPortSmtp()));
-            registry.add("container.mailpit.server", () -> String.format("http://%s:%d",
-                    mailpit.getHost(), mailpit.getMappedPort(properties.getPortHttp())));
         };
     }
 
@@ -69,5 +62,17 @@ public class MailPitContainerAutoConfiguration {
     ContainerCustomizers<MailPitContainer, ContainerCustomizer<MailPitContainer>>
     mailPitContainerCustomizers(ObjectProvider<ContainerCustomizer<MailPitContainer>> customizers) {
         return new ContainerCustomizers<>(customizers);
+    }
+
+    @Bean
+    DynamicPropertyRegistrar mailPitContainerProperties(final MailPitContainer mailpit,
+                                                        final MailPitProperties properties) {
+        return registry -> {
+            registry.add("container.mailpit.host", mailpit::getHost);
+            registry.add("container.mailpit.port-http", () -> mailpit.getMappedPort(properties.getPortHttp()));
+            registry.add("container.mailpit.port-smtp", () -> mailpit.getMappedPort(properties.getPortSmtp()));
+            registry.add("container.mailpit.server", () -> String.format("http://%s:%d",
+                    mailpit.getHost(), mailpit.getMappedPort(properties.getPortHttp())));
+        };
     }
 }
