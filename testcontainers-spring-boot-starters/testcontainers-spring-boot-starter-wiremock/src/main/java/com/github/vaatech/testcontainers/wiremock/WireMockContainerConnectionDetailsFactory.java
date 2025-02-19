@@ -6,6 +6,7 @@ import org.wiremock.integrations.testcontainers.WireMockContainer;
 
 class WireMockContainerConnectionDetailsFactory
         extends ContainerConnectionDetailsFactory<WireMockContainer, WireMockConnectionDetails> {
+
     @Override
     protected WireMockConnectionDetails
     getContainerConnectionDetails(final ContainerConnectionSource<WireMockContainer> source) {

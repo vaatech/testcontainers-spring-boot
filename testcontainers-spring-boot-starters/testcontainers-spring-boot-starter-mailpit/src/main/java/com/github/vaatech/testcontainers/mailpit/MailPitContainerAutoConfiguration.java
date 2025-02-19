@@ -2,16 +2,17 @@ package com.github.vaatech.testcontainers.mailpit;
 
 import com.github.vaatech.testcontainers.ContainerCustomizer;
 import com.github.vaatech.testcontainers.ContainerCustomizers;
+import com.github.vaatech.testcontainers.DockerPresenceAutoConfiguration;
 import com.github.vaatech.testcontainers.GenericContainerFactory;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.annotation.Order;
 import org.springframework.test.context.DynamicPropertyRegistrar;
-import org.springframework.test.context.DynamicPropertyRegistry;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.strategy.Wait;
 
@@ -20,13 +21,16 @@ import java.util.Optional;
 
 import static com.github.vaatech.testcontainers.mailpit.MailPitProperties.BEAN_NAME_CONTAINER_MAILPIT;
 
-@AutoConfiguration
+@AutoConfiguration(
+        before = ServiceConnectionAutoConfiguration.class,
+        after = DockerPresenceAutoConfiguration.class)
 @ConditionalOnMailPitContainerEnabled
 @EnableConfigurationProperties(value = {MailPitProperties.class})
 public class MailPitContainerAutoConfiguration {
 
     private static final String MAILPIT_NETWORK_ALIAS = "mailpit.testcontainer.docker";
 
+    @ServiceConnection
     @Bean(name = BEAN_NAME_CONTAINER_MAILPIT, destroyMethod = "stop")
     public MailPitContainer mailpit(MailPitProperties properties,
                                     ContainerCustomizers<MailPitContainer, ContainerCustomizer<MailPitContainer>> customizers) {
@@ -51,7 +55,6 @@ public class MailPitContainerAutoConfiguration {
 
             mailpit.withEnv("MP_MAX_MESSAGES", Objects.toString(properties.getMaxMessages()));
             mailpit.waitingFor(Wait.forLogMessage(".*accessible via.*", 1));
-            mailpit.addExposedPorts(properties.getPortHttp(), properties.getPortSmtp());
             mailpit.withNetworkAliases(MAILPIT_NETWORK_ALIAS);
 
             network.ifPresent(mailpit::withNetwork);

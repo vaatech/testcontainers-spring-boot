@@ -33,7 +33,9 @@ public class MessageSummary {
     public static final String JSON_PROPERTY_ID = "ID";
     public static final String JSON_PROPERTY_MESSAGE_ID = "MessageID";
     public static final String JSON_PROPERTY_READ = "Read";
+    public static final String JSON_PROPERTY_REPLAY_TO = "ReplyTo";
     public static final String JSON_PROPERTY_SIZE = "Size";
+    public static final String JSON_PROPERTY_SNIPPET = "Snippet";
     public static final String JSON_PROPERTY_SUBJECT = "Subject";
     public static final String JSON_PROPERTY_TAGS = "Tags";
     public static final String JSON_PROPERTY_TO = "To";
@@ -62,8 +64,14 @@ public class MessageSummary {
     @JsonProperty(JSON_PROPERTY_READ)
     private Boolean read;
 
+    @JsonProperty(JSON_PROPERTY_REPLAY_TO)
+    private List<Address> replyTo;
+
     @JsonProperty(JSON_PROPERTY_SIZE)
     private Long size;
+
+    @JsonProperty(JSON_PROPERTY_SNIPPET)
+    private String snippet;
 
     @JsonProperty(JSON_PROPERTY_SUBJECT)
     private String subject;

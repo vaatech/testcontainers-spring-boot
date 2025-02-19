@@ -46,7 +46,6 @@ public class Message {
     public static final String JSON_PROPERTY_TEXT = "Text";
     public static final String JSON_PROPERTY_TO = "To";
 
-
     @JsonProperty(JSON_PROPERTY_ATTACHMENTS)
     private List<Attachment> attachments = new ArrayList<>();
 
