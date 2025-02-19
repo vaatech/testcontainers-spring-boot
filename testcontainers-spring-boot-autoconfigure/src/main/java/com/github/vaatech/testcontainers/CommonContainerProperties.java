@@ -17,6 +17,8 @@ public abstract class CommonContainerProperties {
 
     private boolean usePullAlwaysPolicy = false;
 
+    private boolean enabled;
+
     public Duration getTimeoutDuration() {
         return Duration.ofSeconds(waitTimeoutInSeconds);
     }

@@ -22,6 +22,6 @@ public class MailPitProperties extends CommonContainerProperties {
 
     @Override
     public DockerImage getDefaultDockerImage() {
-        return DockerImage.create("axllent/mailpit");
+        return DockerImage.create("axllent/mailpit:v1.22.3");
     }
 }
