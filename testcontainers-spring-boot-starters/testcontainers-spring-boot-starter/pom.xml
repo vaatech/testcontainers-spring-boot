@@ -6,9 +6,9 @@
 
     <parent>
         <groupId>com.github.vaatech.testcontainers</groupId>
-        <artifactId>testcontainers-spring-boot-parent</artifactId>
+        <artifactId>testcontainers-spring-boot-starters</artifactId>
         <version>${revision}</version>
-        <relativePath>../../testcontainers-spring-boot-parent/pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>testcontainers-spring-boot-starter</artifactId>
@@ -21,6 +21,7 @@
         <dependency>
             <groupId>com.github.vaatech.testcontainers</groupId>
             <artifactId>testcontainers-spring-boot-autoconfigure</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

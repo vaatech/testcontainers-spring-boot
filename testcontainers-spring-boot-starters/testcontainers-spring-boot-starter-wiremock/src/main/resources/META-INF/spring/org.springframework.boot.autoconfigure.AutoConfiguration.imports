@@ -1,2 +1,0 @@
-com.github.vaatech.testcontainers.wiremock.WireMockContainerAutoconfiguration
-com.github.vaatech.testcontainers.wiremock.WireMockConnectionDetailsAutoConfiguration
