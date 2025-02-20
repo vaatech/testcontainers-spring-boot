@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory=\
+com.github.vaatech.testcontainers.autoconfigure.mailpit.MailPitContainerConnectionDetailsFactory,\
+com.github.vaatech.testcontainers.autoconfigure.wiremock.WireMockContainerConnectionDetailsFactory

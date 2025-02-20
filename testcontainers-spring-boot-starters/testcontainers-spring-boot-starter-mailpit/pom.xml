@@ -5,21 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.github.vaatech.testcontainers</groupId>
-        <artifactId>testcontainers-spring-boot-parent</artifactId>
+        <artifactId>testcontainers-spring-boot-starters</artifactId>
         <version>${revision}</version>
-        <relativePath>../../testcontainers-spring-boot-parent/pom.xml</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>testcontainers-spring-boot-starter-mailpit</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.github.vaatech.testcontainers</groupId>
-            <artifactId>testcontainers-spring-boot-autoconfigure</artifactId>
+            <artifactId>testcontainers-spring-boot-starter</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -29,55 +26,6 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>7.11.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/src/conf/openapi.json</inputSpec>
-                            <skipValidateSpec>true</skipValidateSpec>
-                            <skipIfSpecIsUnchanged>true</skipIfSpecIsUnchanged>
-                            <generatorName>java</generatorName>
-                            <library>native</library>
-                            <apiPackage>com.github.vaatech.testcontainers.mailpit.rest</apiPackage>
-                            <modelPackage>com.github.vaatech.testcontainers.mailpit.model</modelPackage>
-                            <invokerPackage>com.github.vaatech.testcontainers.mailpit.invoker</invokerPackage>
-                            <generateSupportingFiles>true</generateSupportingFiles>
-                            <generateModelTests>false</generateModelTests>
-                            <generateApiTests>false</generateApiTests>
-                            <configOptions>
-                                <serializableModel>false</serializableModel>
-                                <dateLibrary>java8</dateLibrary>
-                                <hideGenerationTimestamp>true</hideGenerationTimestamp>
-                                <openApiNullable>false</openApiNullable>
-                                <useJakartaEe>true</useJakartaEe>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
