@@ -1,40 +1,40 @@
 package com.github.vaatech.testcontainers.mailpit;
 
 import com.github.vaatech.testcontainers.mailpit.model.*;
-import com.github.vaatech.testcontainers.mailpit.rest.ApplicationRestApi;
-import com.github.vaatech.testcontainers.mailpit.rest.MessageRestApi;
-import com.github.vaatech.testcontainers.mailpit.rest.MessagesRestApi;
+import com.github.vaatech.testcontainers.mailpit.rest.ApplicationApi;
+import com.github.vaatech.testcontainers.mailpit.rest.MessageApi;
+import com.github.vaatech.testcontainers.mailpit.rest.MessagesApi;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class Mailbox {
 
-    private final ApplicationRestApi applicationApi;
-    private final MessagesRestApi messagesApi;
-    private final MessageRestApi messageApi;
+    private final ApplicationApi applicationApi;
+    private final MessagesApi messagesApi;
+    private final MessageApi messageApi;
 
     /**
      * Delete a single message.
      *
      * @param ID Database ID to delete
      */
-    public Boolean delete(String ID) {
-        final DeleteRequest request = new DeleteRequest();
+    @SneakyThrows
+    public String delete(String ID) {
+        final DeleteMessagesParamsRequest request = new DeleteMessagesParamsRequest();
         request.addIdsItem(ID);
-        return messagesApi.delete(request);
+        return messagesApi.deleteMessagesParams(request);
     }
 
     /**
      * Delete all messages.
      */
-    public Boolean clear() {
-        final DeleteRequest request = new DeleteRequest();
-        return messagesApi.delete(request);
+    @SneakyThrows
+    public String clear() {
+        final DeleteMessagesParamsRequest request = new DeleteMessagesParamsRequest();
+        return messagesApi.deleteMessagesParams(request);
     }
 
     /**
@@ -46,10 +46,37 @@ public class Mailbox {
      * @return List<Message>
      */
     public List<Message> find(String query, Integer start, Integer limit) {
+        return find(query, start, limit, null);
+    }
+
+
+    /**
+     * Search messages. Returns the latest messages matching a search.
+     *
+     * @param query    Search query (required)
+     * @param start    Pagination offset (optional, default to 0)
+     * @param limit    Limit results (optional, default to 50)
+     * @param timeZone Specify a timezone for before: and after: queries (optional, default null)
+     * @return List<Message>
+     */
+    @SneakyThrows
+    public List<Message> find(String query, Integer start, Integer limit, TimeZone timeZone) {
         final List<Message> results = new ArrayList<>();
-        final MessagesSummary messages = messagesApi.messagesSummary(query, start, limit);
+        String startStr = null;
+        if (start != null) {
+            startStr = start.toString();
+        }
+        String limitStr = null;
+        if (limit != null) {
+            limitStr = limit.toString();
+        }
+        String timezoneID = null;
+        if (timeZone != null) {
+            timezoneID = timeZone.getID();
+        }
+        final MessagesSummary messages = messagesApi.searchParams(query, startStr, limitStr, timezoneID);
         for (MessageSummary summary : Objects.requireNonNull(messages.getMessages())) {
-            Message message = messageApi.message(summary.getID());
+            Message message = messageApi.getMessageParams(summary.getID());
             results.add(message);
         }
 
@@ -76,7 +103,12 @@ public class Mailbox {
      *
      * @return AppInformation
      */
+    @SneakyThrows
     public AppInformation getApplicationInfo() {
         return applicationApi.appInformation();
+    }
+
+    private <T extends Throwable> void rethrow(Throwable x) throws T {
+        throw (T) x;
     }
 }

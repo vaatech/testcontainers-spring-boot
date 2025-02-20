@@ -16,12 +16,12 @@
 
     <modules>
         <module>testcontainers-spring-boot-bom</module>
-        <module>testcontainers-spring-boot-dependencies</module>
         <module>testcontainers-spring-boot-parent</module>
         <module>testcontainers-spring-boot-autoconfigure</module>
         <module>testcontainers-spring-boot-starters\testcontainers-spring-boot-starter</module>
         <module>testcontainers-spring-boot-starters\testcontainers-spring-boot-starter-mysql</module>
         <module>testcontainers-spring-boot-starters\testcontainers-spring-boot-starter-wiremock</module>
+        <module>testcontainers-spring-boot-embedded</module>
     </modules>
 
     <build>
