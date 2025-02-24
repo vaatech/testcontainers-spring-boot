@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.github.vaatech.testcontainers.autoconfigure.ConditionalOnContainersEnabled;
 import com.github.vaatech.testcontainers.autoconfigure.mailpit.invoker.ApiClient;
 import com.github.vaatech.testcontainers.autoconfigure.mailpit.rest.ApplicationApi;
 import com.github.vaatech.testcontainers.autoconfigure.mailpit.rest.MessageApi;
@@ -12,13 +11,11 @@ import com.github.vaatech.testcontainers.autoconfigure.mailpit.rest.MessagesApi;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.net.http.HttpClient;
 import java.time.Duration;
 
 @AutoConfiguration
-@ConditionalOnContainersEnabled
 public class MailboxAutoConfiguration {
 
     @Bean

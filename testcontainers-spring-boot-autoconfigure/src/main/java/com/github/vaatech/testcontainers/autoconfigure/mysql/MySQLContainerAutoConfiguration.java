@@ -7,6 +7,7 @@ import com.github.vaatech.testcontainers.autoconfigure.GenericContainerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.jdbc.JdbcConnectionDetails;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
@@ -29,8 +30,9 @@ public class MySQLContainerAutoConfiguration {
 
     @ServiceConnection
     @Bean(name = MySQLProperties.BEAN_NAME_CONTAINER_MYSQL, destroyMethod = "stop")
-    public MySQLContainer<?> mysql(MySQLProperties properties,
-                                   ContainerCustomizers<MySQLContainer<?>, ContainerCustomizer<MySQLContainer<?>>> customizers) {
+    public MySQLContainer<?>
+    mysql(MySQLProperties properties,
+          ContainerCustomizers<MySQLContainer<?>, ContainerCustomizer<MySQLContainer<?>>> customizers) {
 
         MySQLContainer<?> mysql = GenericContainerFactory.getGenericContainer(
                 properties,
@@ -63,13 +65,11 @@ public class MySQLContainerAutoConfiguration {
     }
 
     @Bean
-    DynamicPropertyRegistrar mySQLContainerProperties(final MySQLContainer<?> container) {
+    DynamicPropertyRegistrar mySQLContainerProperties(final JdbcConnectionDetails connectionDetails) {
         return registry -> {
-            registry.add("container.mysql.port", () -> container.getMappedPort(MySQLContainer.MYSQL_PORT));
-            registry.add("container.mysql.host", container::getHost);
-            registry.add("container.mysql.database", container::getDatabaseName);
-            registry.add("container.mysql.username", container::getUsername);
-            registry.add("container.mysql.password", container::getPassword);
+            registry.add("container.mysql.url", connectionDetails::getJdbcUrl);
+            registry.add("container.mysql.username", connectionDetails::getUsername);
+            registry.add("container.mysql.password", connectionDetails::getPassword);
         };
     }
 }

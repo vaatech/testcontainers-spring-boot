@@ -18,6 +18,7 @@
         <module>testcontainers-spring-boot-starter</module>
         <module>testcontainers-spring-boot-starter-mailpit</module>
         <module>testcontainers-spring-boot-starter-mysql</module>
+        <module>testcontainers-spring-boot-starter-postgres</module>
         <module>testcontainers-spring-boot-starter-wiremock</module>
     </modules>
 

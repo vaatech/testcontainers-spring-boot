@@ -33,8 +33,9 @@ public class MailPitContainerAutoConfiguration {
 
     @ServiceConnection
     @Bean(name = BEAN_NAME_CONTAINER_MAILPIT, destroyMethod = "stop")
-    public MailPitContainer mailpit(MailPitProperties properties,
-                                    ContainerCustomizers<MailPitContainer, ContainerCustomizer<MailPitContainer>> customizers) {
+    public MailPitContainer
+    mailpit(MailPitProperties properties,
+            ContainerCustomizers<MailPitContainer, ContainerCustomizer<MailPitContainer>> customizers) {
 
         MailPitContainer mailpit = GenericContainerFactory.getGenericContainer(
                 properties,
