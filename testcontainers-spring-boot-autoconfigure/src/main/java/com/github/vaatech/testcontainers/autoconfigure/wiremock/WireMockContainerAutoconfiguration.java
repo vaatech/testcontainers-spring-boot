@@ -65,11 +65,12 @@ public class WireMockContainerAutoconfiguration {
     }
 
     @Bean
-    DynamicPropertyRegistrar wireMockContainerProperties(final WireMockContainer wiremock) {
+//    @DependsOn(BEAN_NAME_CONTAINER_WIREMOCK)
+    DynamicPropertyRegistrar wireMockContainerProperties(final WireMockConnectionDetails connectionDetails) {
         return registry -> {
-            registry.add("container.wiremock.baseUrl", wiremock::getBaseUrl);
-            registry.add("container.wiremock.host", wiremock::getHost);
-            registry.add("container.wiremock.port", wiremock::getPort);
+            registry.add("container.wiremock.baseUrl", connectionDetails::url);
+            registry.add("container.wiremock.host", connectionDetails::host);
+            registry.add("container.wiremock.port", connectionDetails::port);
         };
     }
 
