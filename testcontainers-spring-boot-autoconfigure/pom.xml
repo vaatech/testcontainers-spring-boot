@@ -16,6 +16,8 @@
     <properties>
         <wiremock.version>3.7.0</wiremock.version>
         <wiremock.testcontainers.version>1.0-alpha-14</wiremock.testcontainers.version>
+
+        <keycloak.testcontainers.version>3.4.0</keycloak.testcontainers.version>
     </properties>
 
     <dependencies>
@@ -58,6 +60,13 @@
         </dependency>
 
         <!-- Starter dependencies-->
+        <dependency>
+            <groupId>com.github.dasniko</groupId>
+            <artifactId>testcontainers-keycloak</artifactId>
+            <version>${keycloak.testcontainers.version}</version>
+            <optional>true</optional>
+        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -159,6 +168,7 @@
                 <version>7.11.0</version>
                 <executions>
                     <execution>
+                        <id>mailpit-api</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>

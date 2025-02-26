@@ -1,6 +1,7 @@
 package com.github.vaatech.testcontainers.autoconfigure.postgresql;
 
 import com.github.vaatech.testcontainers.autoconfigure.CommonContainerProperties;
+import com.github.vaatech.testcontainers.autoconfigure.ContainerImage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -21,6 +22,6 @@ public class PostgreSQLProperties extends CommonContainerProperties {
 
     @Override
     public DockerImage getDefaultDockerImage() {
-        return DockerImage.create("postgres:16.7");
+        return DockerImage.create(ContainerImage.POSTGRESQL.toString());
     }
 }

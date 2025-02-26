@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizer;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizers;
 import com.github.vaatech.testcontainers.autoconfigure.DockerPresenceAutoConfiguration;
-import com.github.vaatech.testcontainers.autoconfigure.GenericContainerFactory;
+import com.github.vaatech.testcontainers.autoconfigure.ContainerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -38,7 +38,7 @@ public class WireMockContainerAutoconfiguration {
 
         final var typeParam = new ParameterizedTypeReference<WireMockContainer>() {
         };
-        WireMockContainer wireMockContainer = GenericContainerFactory.getGenericContainer(properties, typeParam);
+        WireMockContainer wireMockContainer = ContainerFactory.createContainer(properties, typeParam);
         return customizers.customize(wireMockContainer);
     }
 
@@ -65,7 +65,6 @@ public class WireMockContainerAutoconfiguration {
     }
 
     @Bean
-//    @DependsOn(BEAN_NAME_CONTAINER_WIREMOCK)
     DynamicPropertyRegistrar wireMockContainerProperties(final WireMockConnectionDetails connectionDetails) {
         return registry -> {
             registry.add("container.wiremock.baseUrl", connectionDetails::url);

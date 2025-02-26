@@ -3,7 +3,7 @@ package com.github.vaatech.testcontainers.autoconfigure.mysql;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizer;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizers;
 import com.github.vaatech.testcontainers.autoconfigure.DockerPresenceAutoConfiguration;
-import com.github.vaatech.testcontainers.autoconfigure.GenericContainerFactory;
+import com.github.vaatech.testcontainers.autoconfigure.ContainerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -34,7 +34,7 @@ public class MySQLContainerAutoConfiguration {
     mysql(MySQLProperties properties,
           ContainerCustomizers<MySQLContainer<?>, ContainerCustomizer<MySQLContainer<?>>> customizers) {
 
-        MySQLContainer<?> mysql = GenericContainerFactory.getGenericContainer(
+        MySQLContainer<?> mysql = ContainerFactory.createContainer(
                 properties,
                 new ParameterizedTypeReference<>() {
                 }

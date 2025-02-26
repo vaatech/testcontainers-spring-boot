@@ -1,6 +1,7 @@
 package com.github.vaatech.testcontainers.autoconfigure.mailpit;
 
 import com.github.vaatech.testcontainers.autoconfigure.CommonContainerProperties;
+import com.github.vaatech.testcontainers.autoconfigure.ContainerImage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -22,6 +23,6 @@ public class MailPitProperties extends CommonContainerProperties {
 
     @Override
     public DockerImage getDefaultDockerImage() {
-        return DockerImage.create("axllent/mailpit:v1.22.3");
+        return DockerImage.create(ContainerImage.MAILPIT.toString());
     }
 }

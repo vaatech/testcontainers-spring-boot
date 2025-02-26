@@ -1,6 +1,7 @@
 package com.github.vaatech.testcontainers.autoconfigure.mysql;
 
 import com.github.vaatech.testcontainers.autoconfigure.CommonContainerProperties;
+import com.github.vaatech.testcontainers.autoconfigure.ContainerImage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -28,6 +29,6 @@ public class MySQLProperties extends CommonContainerProperties {
 
     @Override
     public DockerImage getDefaultDockerImage() {
-        return DockerImage.create("mysql:8.0.41");
+        return DockerImage.create(ContainerImage.MYSQL.toString());
     }
 }

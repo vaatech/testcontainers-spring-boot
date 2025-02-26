@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.JdbcConnectionDetails;
 import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
+import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.testcontainers.properties.TestcontainersPropertySourceAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
@@ -20,6 +21,7 @@ import javax.sql.DataSource;
 import static com.github.vaatech.testcontainers.autoconfigure.postgresql.PostgreSQLProperties.BEAN_NAME_CONTAINER_POSTGRESQL;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 class PostgreSQLContainerAutoConfigurationTest {
 
@@ -40,6 +42,9 @@ class PostgreSQLContainerAutoConfigurationTest {
                 .run(context -> {
                     JdbcConnectionDetails connectionDetails = context.getBean(JdbcConnectionDetails.class);
                     assertThat(connectionDetails).isNotNull();
+
+                    JdbcTemplate jdbcTemplate = context.getBean(JdbcTemplate.class);
+                    assertThatNoException().isThrownBy(() -> jdbcTemplate.execute(DatabaseDriver.POSTGRESQL.getValidationQuery()));
                 });
     }
 
