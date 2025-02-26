@@ -4,11 +4,7 @@ import org.springframework.boot.autoconfigure.service.connection.ConnectionDetai
 
 public interface MailPitConnectionDetails extends ConnectionDetails {
     String host();
-
     int portHttp();
-
     int portSMTP();
-
     String serverUrl();
-
 }

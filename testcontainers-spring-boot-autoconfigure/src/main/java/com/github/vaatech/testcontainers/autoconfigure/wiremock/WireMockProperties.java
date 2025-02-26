@@ -1,6 +1,7 @@
 package com.github.vaatech.testcontainers.autoconfigure.wiremock;
 
 import com.github.vaatech.testcontainers.autoconfigure.CommonContainerProperties;
+import com.github.vaatech.testcontainers.autoconfigure.ContainerImage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -20,6 +21,6 @@ public class WireMockProperties extends CommonContainerProperties {
 
     @Override
     public DockerImage getDefaultDockerImage() {
-        return DockerImage.create("wiremock/wiremock:3.7.0");
+        return DockerImage.create(ContainerImage.WIREMOCK.toString());
     }
 }

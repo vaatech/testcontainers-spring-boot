@@ -3,14 +3,13 @@ package com.github.vaatech.testcontainers.autoconfigure.mailpit;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizer;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizers;
 import com.github.vaatech.testcontainers.autoconfigure.DockerPresenceAutoConfiguration;
-import com.github.vaatech.testcontainers.autoconfigure.GenericContainerFactory;
+import com.github.vaatech.testcontainers.autoconfigure.ContainerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.annotation.Order;
 import org.springframework.test.context.DynamicPropertyRegistrar;
@@ -37,7 +36,7 @@ public class MailPitContainerAutoConfiguration {
     mailpit(MailPitProperties properties,
             ContainerCustomizers<MailPitContainer, ContainerCustomizer<MailPitContainer>> customizers) {
 
-        MailPitContainer mailpit = GenericContainerFactory.getGenericContainer(
+        MailPitContainer mailpit = ContainerFactory.createContainer(
                 properties,
                 new ParameterizedTypeReference<>() {
                 }

@@ -11,21 +11,22 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 @Slf4j
-public class GenericContainerFactory {
+public class ContainerFactory {
 
     @SuppressWarnings("unchecked")
-    public static <C extends GenericContainer<?>> C getGenericContainer(CommonContainerProperties properties,
-                                                                        ParameterizedTypeReference<C> typeReference) {
+    public static <C extends GenericContainer<?>> C createContainer(CommonContainerProperties properties,
+                                                                    ParameterizedTypeReference<C> typeReference) {
+
+        ResolvableType resolvable = ResolvableType.forType(typeReference);
+        Class<C> containerClass = (Class<C>) resolvable.getRawClass();
+
+        if (containerClass == null) {
+            throw new RuntimeException("Cannot get raw type for " + typeReference.getType());
+        }
 
         try {
-            ResolvableType resolvable = ResolvableType.forType(typeReference);
-            Class<C> rawType = (Class<C>) resolvable.getRawClass();
-
-            if (rawType == null) {
-                throw new RuntimeException("Cannot get raw type for " + typeReference.getType());
-            }
-
-            Constructor<C> constructor = rawType.getConstructor(DockerImageName.class);
+            Constructor<C> constructor = containerClass.getDeclaredConstructor(DockerImageName.class);
+            constructor.setAccessible(true);
             C container = constructor.newInstance(getDockerImageName(properties));
 
             container
@@ -34,11 +35,8 @@ public class GenericContainerFactory {
                     .withImagePullPolicy(properties.isUsePullAlwaysPolicy() ? PullPolicy.alwaysPull() : PullPolicy.defaultPolicy());
 
             return container;
-        } catch (NoSuchMethodException
-                 | InvocationTargetException
-                 | InstantiationException
-                 | IllegalAccessException e) {
-            throw new RuntimeException(e);
+        } catch (Exception ex) {
+            throw new IllegalStateException("Unable to create container " + containerClass, ex);
         }
     }
 
