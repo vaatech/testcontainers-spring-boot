@@ -2,8 +2,8 @@ package com.github.vaatech.testcontainers.autoconfigure.postgresql;
 
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizer;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizers;
-import com.github.vaatech.testcontainers.autoconfigure.DockerPresenceAutoConfiguration;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerFactory;
+import com.github.vaatech.testcontainers.autoconfigure.DockerPresenceAutoConfiguration;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -12,7 +12,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.annotation.Order;
 import org.springframework.test.context.DynamicPropertyRegistrar;
 import org.testcontainers.containers.Network;
@@ -38,12 +37,7 @@ public class PostgreSQLContainerAutoConfiguration {
     postgresql(PostgreSQLProperties properties,
                ContainerCustomizers<PostgreSQLContainer<?>, ContainerCustomizer<PostgreSQLContainer<?>>> customizers) {
 
-        PostgreSQLContainer<?> postgresql = ContainerFactory.createContainer(
-                properties,
-                new ParameterizedTypeReference<>() {
-                }
-        );
-
+        PostgreSQLContainer<?> postgresql = ContainerFactory.createContainer(properties, PostgreSQLContainer.class);
         return customizers.customize(postgresql);
     }
 

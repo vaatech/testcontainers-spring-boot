@@ -21,5 +21,4 @@ public class PostgreSQLContainerDependenciesAutoConfiguration {
     public static BeanFactoryPostProcessor datasourcePostgreSQLDependencyPostProcessor() {
         return new DependsOnBeanFactoryPostProcessor(DataSource.class, BEAN_NAME_CONTAINER_POSTGRESQL);
     }
-
 }

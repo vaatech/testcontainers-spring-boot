@@ -2,26 +2,37 @@ package com.github.vaatech.testcontainers.autoconfigure;
 
 import lombok.Data;
 import lombok.Getter;
+import org.springframework.boot.convert.DurationUnit;
 import org.testcontainers.utility.DockerImageName;
 
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 public abstract class CommonContainerProperties {
 
+    private boolean enabled;
+
     private DockerImage dockerImage;
 
-    private long waitTimeoutInSeconds = 60;
+    @DurationUnit(ChronoUnit.SECONDS)
+    private Duration startupTimeout = Duration.ofSeconds(60);
+
+    private int startupAttempts = 1;
 
     private boolean reuseContainer = false;
 
     private boolean usePullAlwaysPolicy = false;
 
-    private boolean enabled;
+    private boolean attachContainerLog = false;
 
-    public Duration getTimeoutDuration() {
-        return Duration.ofSeconds(waitTimeoutInSeconds);
-    }
+    private String[] command;
+
+    private Map<String, String> env = new HashMap<>();
+
+    private Map<String, String> label = new HashMap<>();
 
     public abstract DockerImage getDefaultDockerImage();
 

@@ -32,7 +32,7 @@ public class KeycloakContainerAutoConfiguration {
 
         final var typeParam = new ParameterizedTypeReference<KeycloakContainer>() {
         };
-        KeycloakContainer keycloakContainer = ContainerFactory.createContainer(properties, typeParam);
+        KeycloakContainer keycloakContainer = ContainerFactory.createContainer(properties, KeycloakContainer.class);
         return customizers.customize(keycloakContainer);
     }
 

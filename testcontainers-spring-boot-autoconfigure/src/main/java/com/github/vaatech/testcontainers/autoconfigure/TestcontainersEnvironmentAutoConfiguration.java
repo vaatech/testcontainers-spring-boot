@@ -21,9 +21,4 @@ public class TestcontainersEnvironmentAutoConfiguration {
         log.info("Created docker Network with id={}", network.getId());
         return network;
     }
-
-    @Bean
-    ContainerLogsBeanPostProcessor containerLogsBeanPostProcessor() {
-        return new ContainerLogsBeanPostProcessor();
-    }
 }
