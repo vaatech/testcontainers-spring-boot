@@ -8,14 +8,14 @@ public class MailPitContainerConnectionDetailsFactory
 
     @Override
     protected MailPitConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<MailPitContainer> source) {
-        return new WireMockContainerConnectionDetails(source);
+        return new MailPitContainerConnectionDetails(source);
     }
 
-    private static final class WireMockContainerConnectionDetails
+    private static final class MailPitContainerConnectionDetails
             extends ContainerConnectionDetails<MailPitContainer>
             implements MailPitConnectionDetails {
 
-        private WireMockContainerConnectionDetails(
+        private MailPitContainerConnectionDetails(
                 ContainerConnectionSource<MailPitContainer> source) {
             super(source);
         }

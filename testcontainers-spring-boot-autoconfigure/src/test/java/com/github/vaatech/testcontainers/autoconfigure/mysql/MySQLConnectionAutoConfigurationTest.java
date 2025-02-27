@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 @Slf4j
-public class MySQLContainerAutoConfigurationTest {
+public class MySQLConnectionAutoConfigurationTest {
 
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
@@ -43,7 +43,7 @@ public class MySQLContainerAutoConfigurationTest {
                     DockerPresenceAutoConfiguration.class,
                     TestcontainersEnvironmentAutoConfiguration.class,
                     MySQLContainerDependenciesAutoConfiguration.class,
-                    MySQLContainerAutoConfiguration.class));
+                    MySQLConnectionAutoConfiguration.class));
 
     @Test
     public void connectionDetailsAreAvailable() {
@@ -119,7 +119,7 @@ public class MySQLContainerAutoConfigurationTest {
     @Test
     void shouldHaveCustomizer() {
         contextRunner
-                .withUserConfiguration(MySQLContainerAutoConfigurationTest.CustomizedMySQLContainerConfiguration.class)
+                .withUserConfiguration(MySQLConnectionAutoConfigurationTest.CustomizedMySQLContainerConfiguration.class)
                 .run(context -> {
                     var type = ResolvableType.forType(new ParameterizedTypeReference<ContainerCustomizer<MySQLContainer<?>>>() {
                     });

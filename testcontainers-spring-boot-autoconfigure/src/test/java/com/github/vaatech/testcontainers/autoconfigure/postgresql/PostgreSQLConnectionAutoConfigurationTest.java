@@ -23,7 +23,7 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
-class PostgreSQLContainerAutoConfigurationTest {
+class PostgreSQLConnectionAutoConfigurationTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(
@@ -33,7 +33,7 @@ class PostgreSQLContainerAutoConfigurationTest {
                     ServiceConnectionAutoConfiguration.class,
                     DockerPresenceAutoConfiguration.class,
                     TestcontainersEnvironmentAutoConfiguration.class,
-                    PostgreSQLContainerAutoConfiguration.class,
+                    PostgreSQLConnectionAutoConfiguration.class,
                     PostgreSQLContainerDependenciesAutoConfiguration.class));
 
     @Test

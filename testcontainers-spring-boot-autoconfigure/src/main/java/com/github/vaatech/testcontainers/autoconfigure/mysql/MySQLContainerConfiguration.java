@@ -3,29 +3,25 @@ package com.github.vaatech.testcontainers.autoconfigure.mysql;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizer;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizers;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerFactory;
-import com.github.vaatech.testcontainers.autoconfigure.DockerPresenceAutoConfiguration;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.jdbc.JdbcConnectionDetails;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.test.context.DynamicPropertyRegistrar;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Network;
 
 import java.util.Optional;
 
-@AutoConfiguration(
-        before = ServiceConnectionAutoConfiguration.class,
-        after = DockerPresenceAutoConfiguration.class)
-@ConditionalOnMySQLContainerEnabled
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(MySQLContainer.class)
+@ConditionalOnMissingBean(MySQLContainer.class)
+@ConditionalOnMySQLContainerEnabled
 @EnableConfigurationProperties(MySQLProperties.class)
-public class MySQLContainerAutoConfiguration {
+public class MySQLContainerConfiguration {
 
     @ServiceConnection
     @Bean(name = MySQLProperties.BEAN_NAME_CONTAINER_MYSQL, destroyMethod = "stop")
@@ -55,15 +51,6 @@ public class MySQLContainerAutoConfiguration {
                     .withExposedPorts(properties.getExposedPorts());
 
             network.ifPresent(container::withNetwork);
-        };
-    }
-
-    @Bean
-    DynamicPropertyRegistrar mySQLContainerProperties(final JdbcConnectionDetails connectionDetails) {
-        return registry -> {
-            registry.add("container.mysql.url", connectionDetails::getJdbcUrl);
-            registry.add("container.mysql.username", connectionDetails::getUsername);
-            registry.add("container.mysql.password", connectionDetails::getPassword);
         };
     }
 }

@@ -3,36 +3,15 @@ package com.github.vaatech.testcontainers.autoconfigure.mailpit;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnectionAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
-@AutoConfiguration(after = ServiceConnectionAutoConfiguration.class)
+@AutoConfiguration
 @EnableConfigurationProperties(MailPitProperties.class)
 public class MailPitConnectionDetailsAutoConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(MailPitConnectionDetails.class)
     MailPitConnectionDetails mailPitConnectionDetails(final MailPitProperties properties) {
-        return new MailPitConnectionDetails() {
-            @Override
-            public String host() {
-                return properties.getHost();
-            }
-
-            @Override
-            public int portHttp() {
-                return properties.getPortHttp();
-            }
-
-            @Override
-            public int portSMTP() {
-                return properties.getPortSmtp();
-            }
-
-            @Override
-            public String serverUrl() {
-                return String.format("http://%s:%d", host(), portHttp());
-            }
-        };
+        return new PropertiesMailPitConnectionDetails(properties);
     }
 }
