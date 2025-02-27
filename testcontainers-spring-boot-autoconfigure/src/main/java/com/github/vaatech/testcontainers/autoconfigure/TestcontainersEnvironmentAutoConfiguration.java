@@ -10,7 +10,7 @@ import org.testcontainers.containers.Network;
 
 @Slf4j
 @AutoConfiguration
-@AutoConfigureOrder(value = Ordered.HIGHEST_PRECEDENCE)
+@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
 @ConditionalOnContainersEnabled
 public class TestcontainersEnvironmentAutoConfiguration {
 

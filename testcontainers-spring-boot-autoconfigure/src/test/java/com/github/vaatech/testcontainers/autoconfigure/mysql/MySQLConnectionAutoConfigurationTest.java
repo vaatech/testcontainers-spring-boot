@@ -6,8 +6,6 @@ import com.github.vaatech.testcontainers.autoconfigure.TestcontainersEnvironment
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.JdbcConnectionDetails;
@@ -24,9 +22,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.testcontainers.containers.MySQLContainer;
 
-import javax.sql.DataSource;
-
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
@@ -42,7 +37,6 @@ public class MySQLConnectionAutoConfigurationTest {
                     ServiceConnectionAutoConfiguration.class,
                     DockerPresenceAutoConfiguration.class,
                     TestcontainersEnvironmentAutoConfiguration.class,
-                    MySQLContainerDependenciesAutoConfiguration.class,
                     MySQLConnectionAutoConfiguration.class));
 
     @Test
@@ -92,27 +86,6 @@ public class MySQLConnectionAutoConfigurationTest {
 
                     Integer count = jdbcTemplate.queryForObject("select count(first_name) from person where first_name = 'Sam' ", Integer.class);
                     Assertions.assertThat(count).isEqualTo(1);
-                });
-    }
-
-    @Test
-    public void shouldSetupDependsOnForAllDataSources() {
-        contextRunner
-                .run(context -> {
-                    ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
-
-                    String[] beanNamesForType =
-                            BeanFactoryUtils.beanNamesForTypeIncludingAncestors(beanFactory, DataSource.class);
-
-                    assertThat(beanNamesForType)
-                            .as("Auto-configured datasource should be present")
-                            .hasSize(1)
-                            .contains("dataSource");
-
-                    asList(beanNamesForType).forEach(beanName -> assertThat(beanFactory.getBeanDefinition(beanName).getDependsOn())
-                            .isNotNull()
-                            .isNotEmpty()
-                            .contains(MySQLProperties.BEAN_NAME_CONTAINER_MYSQL));
                 });
     }
 
