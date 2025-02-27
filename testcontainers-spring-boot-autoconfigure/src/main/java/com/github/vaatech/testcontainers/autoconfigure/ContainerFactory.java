@@ -1,5 +1,8 @@
 package com.github.vaatech.testcontainers.autoconfigure;
 
+import com.github.dockerjava.api.model.Capability;
+import com.github.vaatech.testcontainers.autoconfigure.CommonContainerProperties.MountVolume;
+import com.github.vaatech.testcontainers.autoconfigure.CommonContainerProperties.TmpFsMount;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.core.ParameterizedTypeReference;
@@ -11,9 +14,13 @@ import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.images.PullPolicy;
 import org.testcontainers.utility.DockerImageName;
 import org.testcontainers.utility.DockerLoggerFactory;
+import org.testcontainers.utility.MountableFile;
 
 import java.lang.reflect.Constructor;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class ContainerFactory {
@@ -46,6 +53,27 @@ public class ContainerFactory {
                     .withEnv(properties.getEnv())
                     .withLabels(properties.getLabel())
                     .withImagePullPolicy(properties.isUsePullAlwaysPolicy() ? PullPolicy.alwaysPull() : PullPolicy.defaultPolicy());
+
+            for (MountVolume mountVolume : properties.getMountVolumes()) {
+                MountableFile mountableFile = switch (mountVolume.type()) {
+                    case CLASSPATH -> MountableFile.forClasspathResource(mountVolume.path(), mountVolume.mode());
+                    case HOST -> MountableFile.forHostPath(mountVolume.path(), mountVolume.mode());
+                };
+                container.withCopyToContainer(mountableFile, mountVolume.containerPath());
+            }
+
+            if (!properties.getCapabilities().isEmpty()) {
+                Capability[] capabilities = properties.getCapabilities().toArray(new Capability[0]);
+                container.withCreateContainerCmdModifier(
+                        cmd -> Objects.requireNonNull(cmd.getHostConfig()).withCapAdd(capabilities));
+            }
+
+            if (!properties.getTmpFs().isEmpty()) {
+                Map<String, String> tmpFsMapping = properties.getTmpFs()
+                        .stream()
+                        .collect(Collectors.toMap(TmpFsMount::folder, TmpFsMount::options));
+                container.withTmpFs(tmpFsMapping);
+            }
 
             if (properties.getCommand() != null && properties.getCommand().length > 0) {
                 container.withCommand(properties.getCommand());

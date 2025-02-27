@@ -3,6 +3,11 @@ package com.github.vaatech.testcontainers.autoconfigure;
 public enum ContainerImage {
 
     /**
+     * A container image suitable for testing with Keycloak.
+     */
+    KEYCLOAK("quay.io/keycloak/keycloak", "25.0.6"),
+
+    /**
      * A container image suitable for testing SMTP.
      */
     MAILPIT("axllent/mailpit", "v1.22.3"),

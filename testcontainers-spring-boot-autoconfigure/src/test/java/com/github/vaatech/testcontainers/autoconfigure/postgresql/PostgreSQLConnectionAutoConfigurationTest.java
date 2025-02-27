@@ -27,8 +27,7 @@ class PostgreSQLConnectionAutoConfigurationTest {
                     ServiceConnectionAutoConfiguration.class,
                     DockerPresenceAutoConfiguration.class,
                     TestcontainersEnvironmentAutoConfiguration.class,
-                    PostgreSQLConnectionAutoConfiguration.class/*,
-                    PostgreSQLContainerDependenciesAutoConfiguration.class*/));
+                    PostgreSQLConnectionAutoConfiguration.class));
 
     @Test
     public void connectionDetailsAreAvailable() {

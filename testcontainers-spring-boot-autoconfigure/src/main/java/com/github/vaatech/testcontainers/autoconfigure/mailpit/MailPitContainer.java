@@ -1,8 +1,9 @@
 package com.github.vaatech.testcontainers.autoconfigure.mailpit;
 
-import lombok.NonNull;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
+
+import java.util.Objects;
 
 public class MailPitContainer extends GenericContainer<MailPitContainer> {
 
@@ -10,9 +11,8 @@ public class MailPitContainer extends GenericContainer<MailPitContainer> {
 
     public static final Integer SMTP_PORT = 1025;
 
-    public MailPitContainer(@NonNull final DockerImageName dockerImageName) {
-        super(dockerImageName);
-
+    public MailPitContainer(final DockerImageName dockerImageName) {
+        super(Objects.requireNonNull(dockerImageName,"DockerImageName is required"));
         addExposedPorts(HTTP_PORT, SMTP_PORT);
     }
 

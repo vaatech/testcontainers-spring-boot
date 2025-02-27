@@ -1,6 +1,7 @@
 package com.github.vaatech.testcontainers.autoconfigure.keycloak;
 
 import com.github.vaatech.testcontainers.autoconfigure.CommonContainerProperties;
+import com.github.vaatech.testcontainers.autoconfigure.ContainerImage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -12,18 +13,16 @@ public class KeycloakProperties extends CommonContainerProperties {
 
     public static final String BEAN_NAME_CONTAINER_KEYCLOAK = "containerKeycloak";
 
-    public static final String[] DEFAULT_COMMAND = {"start-dev", "--import-realm"};
-
     public static final String DEFAULT_ADMIN_USER = "admin";
-    public static final String DEFAULT_ADMIN_PASSWORD = "letmein";
+    public static final String DEFAULT_ADMIN_PASSWORD = "admin";
     public static final String DEFAULT_REALM = "master";
-    public static final String DEFAULT_AUTH_BASE_PATH = "/";
+    public static final String DEFAULT_CONTEXT_PATH = "/";
     public static final String DEFAULT_DB_VENDOR = "dev-mem";
 
-    /**
-     * The command string issued to the container.
-     */
-    private String[] command = DEFAULT_COMMAND;
+    private String host = "localhost";
+
+    private Integer httpPort = 8080;
+
     /**
      * The admin username to use.
      */
@@ -35,7 +34,7 @@ public class KeycloakProperties extends CommonContainerProperties {
     /**
      * The relative auth URL of the container. Maybe needs to be tweaked for the WaitStrategy for different Keycloak versions (/auth vs. /auth/).
      */
-    private String authBasePath = DEFAULT_AUTH_BASE_PATH;
+    private String contextPath = DEFAULT_CONTEXT_PATH;
     /**
      * Classpath location of a JSON file to for importing resources into Keycloak. No prefix is needed.
      */
@@ -79,8 +78,6 @@ public class KeycloakProperties extends CommonContainerProperties {
 
     @Override
     public DockerImage getDefaultDockerImage() {
-        // Please don`t remove this comment.
-        // renovate: datasource=docker
-        return DockerImage.create("wiremock/wiremock:3.7.0");
+        return DockerImage.create(ContainerImage.KEYCLOAK.toString());
     }
 }

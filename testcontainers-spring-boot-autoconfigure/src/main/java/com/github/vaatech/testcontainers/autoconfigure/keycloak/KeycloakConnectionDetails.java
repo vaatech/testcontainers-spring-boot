@@ -1,4 +1,9 @@
 package com.github.vaatech.testcontainers.autoconfigure.keycloak;
 
-public interface KeycloakConnectionDetails {
+import org.springframework.boot.autoconfigure.service.connection.ConnectionDetails;
+
+public interface KeycloakConnectionDetails extends ConnectionDetails {
+    String host();
+    Integer httpPort();
+    String authServerUrl();
 }
