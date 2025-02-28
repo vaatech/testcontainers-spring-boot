@@ -16,6 +16,7 @@ import org.testcontainers.containers.wait.strategy.Wait;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.github.vaatech.testcontainers.autoconfigure.TestcontainersEnvironmentAutoConfiguration.DEFAULT_DNS_NAME;
 import static com.github.vaatech.testcontainers.autoconfigure.mailpit.MailPitProperties.BEAN_NAME_CONTAINER_MAILPIT;
 
 @Configuration(proxyBeanMethods = false)
@@ -23,6 +24,8 @@ import static com.github.vaatech.testcontainers.autoconfigure.mailpit.MailPitPro
 @ConditionalOnMailPitContainerEnabled
 @EnableConfigurationProperties(MailPitProperties.class)
 public class MailPitContainerConfiguration {
+
+    public static final String MAILPIT_NETWORK_ALIAS = "mailpit.testcontainer.docker";
 
     @ServiceConnection(type = MailPitConnectionDetails.class)
     @Bean(name = BEAN_NAME_CONTAINER_MAILPIT, destroyMethod = "stop")
@@ -45,7 +48,8 @@ public class MailPitContainerConfiguration {
 
             mailpit.withEnv("MP_MAX_MESSAGES", Objects.toString(properties.getMaxMessages()));
             mailpit.waitingFor(Wait.forLogMessage(".*accessible via.*", 1));
-
+            mailpit.withNetworkAliases(MAILPIT_NETWORK_ALIAS);
+            mailpit.withExtraHost(DEFAULT_DNS_NAME, "host-gateway");
             network.ifPresent(mailpit::withNetwork);
         };
     }

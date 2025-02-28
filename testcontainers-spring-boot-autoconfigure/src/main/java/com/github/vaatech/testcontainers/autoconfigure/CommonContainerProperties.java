@@ -77,8 +77,8 @@ public abstract class CommonContainerProperties {
 
     public record MountVolume(@NotBlank String path,
                               @NotBlank String containerPath,
-                              @NotNull Integer mode,
-                              @NotNull VolumeType type) {
+                              @NotNull VolumeType type,
+                              Integer mode) {
 
         public MountVolume {
             if (!StringUtils.hasText(path))
@@ -86,9 +86,6 @@ public abstract class CommonContainerProperties {
 
             if (!StringUtils.hasText(containerPath))
                 throw new IllegalArgumentException("container path is required");
-
-            if (mode == null)
-                mode = 444;
 
             if (type == null)
                 throw new IllegalArgumentException("type is required");

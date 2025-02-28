@@ -14,6 +14,8 @@ import org.testcontainers.containers.Network;
 @ConditionalOnContainersEnabled
 public class TestcontainersEnvironmentAutoConfiguration {
 
+    public static final String DEFAULT_DNS_NAME = "host.docker.internal";
+
     @Bean
     @ConditionalOnMissingBean(Network.class)
     Network network() {

@@ -16,12 +16,16 @@ import org.testcontainers.containers.Network;
 
 import java.util.Optional;
 
+import static com.github.vaatech.testcontainers.autoconfigure.TestcontainersEnvironmentAutoConfiguration.DEFAULT_DNS_NAME;
+
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(MySQLContainer.class)
 @ConditionalOnMissingBean(MySQLContainer.class)
 @ConditionalOnMySQLContainerEnabled
 @EnableConfigurationProperties(MySQLProperties.class)
 public class MySQLContainerConfiguration {
+
+    private static final String MYSQL_NETWORK_ALIAS = "mysql.testcontainer.docker";
 
     @ServiceConnection
     @Bean(name = MySQLProperties.BEAN_NAME_CONTAINER_MYSQL, destroyMethod = "stop")
@@ -48,7 +52,12 @@ public class MySQLContainerConfiguration {
                     .withUsername(properties.getUsername())
                     .withPassword(properties.getPassword())
                     .withDatabaseName(properties.getDatabase())
-                    .withExposedPorts(properties.getExposedPorts());
+                    .withNetworkAliases(MYSQL_NETWORK_ALIAS)
+                    .withExposedPorts(properties.getExposedPorts())
+                    .withExtraHost(DEFAULT_DNS_NAME, "host-gateway")
+                    .withCommand(
+                            "--character-set-server=" + properties.getEncoding(),
+                            "--collation-server=" + properties.getCollation());
 
             network.ifPresent(container::withNetwork);
         };

@@ -56,8 +56,18 @@ public class ContainerFactory {
 
             for (MountVolume mountVolume : properties.getMountVolumes()) {
                 MountableFile mountableFile = switch (mountVolume.type()) {
-                    case CLASSPATH -> MountableFile.forClasspathResource(mountVolume.path(), mountVolume.mode());
-                    case HOST -> MountableFile.forHostPath(mountVolume.path(), mountVolume.mode());
+                    case CLASSPATH -> {
+                        if (mountVolume.mode() != null) {
+                            yield MountableFile.forClasspathResource(mountVolume.path(), mountVolume.mode());
+                        }
+                        yield MountableFile.forClasspathResource(mountVolume.path());
+                    }
+                    case HOST -> {
+                        if (mountVolume.mode() != null) {
+                            yield MountableFile.forHostPath(mountVolume.path(), mountVolume.mode());
+                        }
+                        yield MountableFile.forHostPath(mountVolume.path());
+                    }
                 };
                 container.withCopyToContainer(mountableFile, mountVolume.containerPath());
             }

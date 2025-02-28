@@ -46,7 +46,7 @@ public class ContainerFactoryTest {
     })
     static class TestConfiguration {
 
-        @Bean
+        @Bean(destroyMethod = "stop")
         EchoContainer echoContainer(EchoProperties echoProperties) {
             return ContainerFactory.createContainer(echoProperties, EchoContainer.class);
         }

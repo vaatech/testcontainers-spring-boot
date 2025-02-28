@@ -15,6 +15,7 @@ import org.testcontainers.containers.Network;
 
 import java.util.Optional;
 
+import static com.github.vaatech.testcontainers.autoconfigure.TestcontainersEnvironmentAutoConfiguration.DEFAULT_DNS_NAME;
 import static com.github.vaatech.testcontainers.autoconfigure.keycloak.KeycloakProperties.BEAN_NAME_CONTAINER_KEYCLOAK;
 
 @Configuration(proxyBeanMethods = false)
@@ -23,6 +24,8 @@ import static com.github.vaatech.testcontainers.autoconfigure.keycloak.KeycloakP
 @ConditionalOnKeycloakContainerEnabled
 @EnableConfigurationProperties(KeycloakProperties.class)
 public class KeycloakContainerConfiguration {
+
+    public static final String KEYCLOAK_NETWORK_ALIAS = "keycloak.testcontainer.docker";
 
     @ServiceConnection(type = KeycloakConnectionDetails.class)
     @Bean(name = BEAN_NAME_CONTAINER_KEYCLOAK, destroyMethod = "stop")
@@ -43,7 +46,8 @@ public class KeycloakContainerConfiguration {
             keycloak.withContextPath(properties.getContextPath());
             keycloak.withAdminUsername(properties.getAdminUser());
             keycloak.withAdminPassword(properties.getAdminPassword());
-
+            keycloak.withNetworkAliases(KEYCLOAK_NETWORK_ALIAS);
+            keycloak.withExtraHost(DEFAULT_DNS_NAME, "host-gateway");
             network.ifPresent(keycloak::withNetwork);
         };
     }

@@ -3,6 +3,7 @@ package com.github.vaatech.testcontainers.autoconfigure.wiremock;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -26,11 +27,11 @@ public class WireMockConnectionAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnClass(WireMock.class)
     @ConditionalOnMissingBean(WireMock.class)
     WireMock wireMock(final WireMockConnectionDetails connectionDetails) {
         WireMock wireMock = new WireMock(connectionDetails.host(), connectionDetails.port());
         WireMock.configureFor(wireMock);
         return wireMock;
     }
-
 }

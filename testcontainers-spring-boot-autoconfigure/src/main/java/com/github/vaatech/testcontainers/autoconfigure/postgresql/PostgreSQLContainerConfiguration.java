@@ -16,14 +16,16 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.Optional;
 
+import static com.github.vaatech.testcontainers.autoconfigure.TestcontainersEnvironmentAutoConfiguration.DEFAULT_DNS_NAME;
 import static com.github.vaatech.testcontainers.autoconfigure.postgresql.PostgreSQLProperties.BEAN_NAME_CONTAINER_POSTGRESQL;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(PostgreSQLContainer.class)
-@ConditionalOnMissingBean(PostgreSQLContainer.class)
 @ConditionalOnPostgreSQLContainerEnabled
 @EnableConfigurationProperties(PostgreSQLProperties.class)
 public class PostgreSQLContainerConfiguration {
+
+    public static final String POSTGRESQL_NETWORK_ALIAS = "postgresql.testcontainer.docker";
 
     @ServiceConnection
     @Bean(name = BEAN_NAME_CONTAINER_POSTGRESQL, destroyMethod = "stop")
@@ -44,6 +46,8 @@ public class PostgreSQLContainerConfiguration {
             postgresql.withUsername(properties.getUser());
             postgresql.withPassword(properties.getPassword());
             postgresql.withDatabaseName(properties.getDatabase());
+            postgresql.withNetworkAliases(POSTGRESQL_NETWORK_ALIAS);
+            postgresql.withExtraHost(DEFAULT_DNS_NAME, "host-gateway");
             network.ifPresent(postgresql::withNetwork);
         };
     }
