@@ -12,4 +12,7 @@ public interface ContainerFactory {
     <C extends GenericContainer<?>> C createContainer(CommonContainerProperties properties,
                                                       Class<C> containerClass);
 
+    <C extends GenericContainer<?>> C createContainer(CommonContainerProperties properties,
+                                                      Class<C> containerClass,
+                                                      Class<?> parameterType);
 }

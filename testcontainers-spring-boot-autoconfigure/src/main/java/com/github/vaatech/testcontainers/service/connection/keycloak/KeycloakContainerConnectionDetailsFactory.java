@@ -1,7 +1,7 @@
 package com.github.vaatech.testcontainers.service.connection.keycloak;
 
 import com.github.vaatech.testcontainers.autoconfigure.keycloak.KeycloakConnectionDetails;
-import com.github.vaatech.testcontainers.keycloak.KeycloakContainer;
+import dasniko.testcontainers.keycloak.KeycloakContainer;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionSource;
 

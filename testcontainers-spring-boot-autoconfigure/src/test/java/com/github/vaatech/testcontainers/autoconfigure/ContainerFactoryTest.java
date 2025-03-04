@@ -2,7 +2,6 @@ package com.github.vaatech.testcontainers.autoconfigure;
 
 import com.github.vaatech.testcontainers.core.ContainerFactory;
 import com.github.vaatech.testcontainers.core.config.CommonContainerProperties;
-import lombok.NonNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -50,8 +49,10 @@ public class ContainerFactoryTest {
 
         @Bean(destroyMethod = "stop")
         EchoContainer echoContainer(EchoProperties echoProperties,
-                                    ContainerFactory containerFactory) {
-            return containerFactory.createContainer(echoProperties, EchoContainer.class);
+                                    ContainerFactory containerFactory,
+                                    ContainerConfigurer configurer) {
+            var container = containerFactory.createContainer(echoProperties, EchoContainer.class);
+            return configurer.configure(container, echoProperties);
         }
     }
 
@@ -64,7 +65,7 @@ public class ContainerFactoryTest {
                 "ENV_TWO", "VALUE_TWO"
         );
 
-        public EchoContainer(@NonNull final DockerImageName dockerImageName) {
+        public EchoContainer(final DockerImageName dockerImageName) {
             super(dockerImageName);
         }
 

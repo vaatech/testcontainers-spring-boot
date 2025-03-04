@@ -1,8 +1,8 @@
 package com.github.vaatech.testcontainers.autoconfigure.wiremock;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.vaatech.testcontainers.autoconfigure.ContainerConfigurer;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizer;
-import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizers;
 import com.github.vaatech.testcontainers.core.ContainerFactory;
 import com.github.vaatech.testcontainers.wiremock.WireMockProperties;
 import org.springframework.beans.factory.ObjectProvider;
@@ -13,12 +13,8 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.testcontainers.containers.Network;
 import org.wiremock.integrations.testcontainers.WireMockContainer;
 
-import java.util.Optional;
-
-import static com.github.vaatech.testcontainers.autoconfigure.TestcontainersEnvironmentAutoConfiguration.DEFAULT_DNS_NAME;
 import static com.github.vaatech.testcontainers.wiremock.WireMockProperties.BEAN_NAME_CONTAINER_WIREMOCK;
 
 @Configuration(proxyBeanMethods = false)
@@ -34,30 +30,22 @@ public class WireMockContainerConfiguration {
     @Bean(name = BEAN_NAME_CONTAINER_WIREMOCK, destroyMethod = "stop")
     WireMockContainer wiremock(final WireMockProperties properties,
                                final ContainerFactory containerFactory,
-                               final ContainerCustomizers<WireMockContainer, ContainerCustomizer<WireMockContainer>> customizers) {
+                               final ContainerConfigurer configurer,
+                               final ObjectProvider<ContainerCustomizer<WireMockContainer>> customizers) {
 
         WireMockContainer wireMockContainer = containerFactory.createContainer(properties, WireMockContainer.class);
-        return customizers.customize(wireMockContainer);
+        return configurer.configure(wireMockContainer, properties, customizers.orderedStream());
     }
 
     @Bean
     @Order(0)
-    ContainerCustomizer<WireMockContainer> standardWireMockContainerCustomizer(final WireMockProperties properties,
-                                                                               final Optional<Network> network) {
+    ContainerCustomizer<WireMockContainer> standardWireMockContainerCustomizer(final WireMockProperties properties) {
         return wiremock -> {
             if (properties.isVerbose()) {
                 wiremock.withCliArg("--verbose");
             }
             wiremock.withoutBanner();
             wiremock.withNetworkAliases(WIREMOCK_NETWORK_ALIAS);
-            wiremock.withExtraHost(DEFAULT_DNS_NAME, "host-gateway");
-            network.ifPresent(wiremock::withNetwork);
         };
-    }
-
-    @Bean
-    ContainerCustomizers<WireMockContainer, ContainerCustomizer<WireMockContainer>>
-    wireMockContainerCustomizers(final ObjectProvider<ContainerCustomizer<WireMockContainer>> customizers) {
-        return new ContainerCustomizers<>(customizers);
     }
 }

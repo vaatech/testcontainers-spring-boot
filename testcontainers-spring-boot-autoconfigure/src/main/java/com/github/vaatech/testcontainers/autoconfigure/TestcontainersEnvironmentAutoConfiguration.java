@@ -1,7 +1,7 @@
 package com.github.vaatech.testcontainers.autoconfigure;
 
 import com.github.vaatech.testcontainers.core.ContainerFactory;
-import com.github.vaatech.testcontainers.core.ContainerFactoryImpl;
+import com.github.vaatech.testcontainers.core.DefaultContainerFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
@@ -28,7 +28,13 @@ public class TestcontainersEnvironmentAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ContainerFactory containerFactory() {
-        return new ContainerFactoryImpl();
+    ContainerFactory containerFactory() {
+        return new DefaultContainerFactory();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    ContainerConfigurer containerConfigurer(final Network network) {
+        return new DefaultContainerConfigurer(network);
     }
 }

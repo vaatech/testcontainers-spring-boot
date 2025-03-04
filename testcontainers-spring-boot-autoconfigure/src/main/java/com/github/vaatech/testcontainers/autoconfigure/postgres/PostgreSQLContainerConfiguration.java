@@ -1,7 +1,7 @@
 package com.github.vaatech.testcontainers.autoconfigure.postgres;
 
+import com.github.vaatech.testcontainers.autoconfigure.ContainerConfigurer;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizer;
-import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizers;
 import com.github.vaatech.testcontainers.core.ContainerFactory;
 import com.github.vaatech.testcontainers.postgres.PostgreSQLProperties;
 import org.springframework.beans.factory.ObjectProvider;
@@ -11,12 +11,8 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.testcontainers.containers.Network;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-import java.util.Optional;
-
-import static com.github.vaatech.testcontainers.autoconfigure.TestcontainersEnvironmentAutoConfiguration.DEFAULT_DNS_NAME;
 import static com.github.vaatech.testcontainers.postgres.PostgreSQLProperties.BEAN_NAME_CONTAINER_POSTGRESQL;
 
 @Configuration(proxyBeanMethods = false)
@@ -32,30 +28,22 @@ public class PostgreSQLContainerConfiguration {
     public PostgreSQLContainer<?>
     postgresql(final PostgreSQLProperties properties,
                final ContainerFactory containerFactory,
-               final ContainerCustomizers<PostgreSQLContainer<?>, ContainerCustomizer<PostgreSQLContainer<?>>> customizers) {
+               final ContainerConfigurer configurer,
+               final ObjectProvider<ContainerCustomizer<PostgreSQLContainer<?>>> customizers) {
 
         PostgreSQLContainer<?> postgresql = containerFactory.createContainer(properties, PostgreSQLContainer.class);
-        return customizers.customize(postgresql);
+        return configurer.configure(postgresql, properties, customizers.orderedStream());
     }
 
     @Bean
     @Order(0)
     public ContainerCustomizer<PostgreSQLContainer<?>>
-    standardPostgreSQLContainerCustomizer(final PostgreSQLProperties properties,
-                                          final Optional<Network> network) {
+    standardPostgreSQLContainerCustomizer(final PostgreSQLProperties properties) {
         return postgresql -> {
             postgresql.withUsername(properties.getUser());
             postgresql.withPassword(properties.getPassword());
             postgresql.withDatabaseName(properties.getDatabase());
             postgresql.withNetworkAliases(POSTGRESQL_NETWORK_ALIAS);
-            postgresql.withExtraHost(DEFAULT_DNS_NAME, "host-gateway");
-            network.ifPresent(postgresql::withNetwork);
         };
-    }
-
-    @Bean
-    ContainerCustomizers<PostgreSQLContainer<?>, ContainerCustomizer<PostgreSQLContainer<?>>>
-    postgreSQLContainerCustomizers(ObjectProvider<ContainerCustomizer<PostgreSQLContainer<?>>> customizers) {
-        return new ContainerCustomizers<>(customizers);
     }
 }

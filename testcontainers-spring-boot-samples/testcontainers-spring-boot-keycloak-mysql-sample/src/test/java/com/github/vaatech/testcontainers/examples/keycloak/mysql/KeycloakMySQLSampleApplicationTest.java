@@ -2,7 +2,7 @@ package com.github.vaatech.testcontainers.examples.keycloak.mysql;
 
 
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizer;
-import com.github.vaatech.testcontainers.keycloak.KeycloakContainer;
+import dasniko.testcontainers.keycloak.KeycloakContainer;
 import org.junit.jupiter.api.Test;
 import org.keycloak.admin.client.Keycloak;
 import org.springframework.beans.factory.annotation.Autowired;

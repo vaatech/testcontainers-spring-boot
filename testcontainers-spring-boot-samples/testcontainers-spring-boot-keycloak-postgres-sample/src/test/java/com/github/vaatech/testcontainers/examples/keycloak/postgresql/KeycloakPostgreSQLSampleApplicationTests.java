@@ -1,7 +1,7 @@
 package com.github.vaatech.testcontainers.examples.keycloak.postgresql;
 
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizer;
-import com.github.vaatech.testcontainers.keycloak.KeycloakContainer;
+import dasniko.testcontainers.keycloak.KeycloakContainer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.keycloak.admin.client.Keycloak;
