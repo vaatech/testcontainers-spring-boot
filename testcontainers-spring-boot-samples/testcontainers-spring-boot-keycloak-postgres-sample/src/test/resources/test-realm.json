@@ -1,0 +1,5 @@
+{
+  "realm": "test-realm",
+  "enabled": true,
+  "sslRequired": "external"
+}

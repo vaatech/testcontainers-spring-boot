@@ -16,7 +16,7 @@ public class KeycloakProperties extends CommonContainerProperties {
     public static final String DEFAULT_ADMIN_USER = "admin";
     public static final String DEFAULT_ADMIN_PASSWORD = "admin";
     public static final String DEFAULT_REALM = "master";
-    public static final String DEFAULT_CONTEXT_PATH = "/";
+    public static final String DEFAULT_CONTEXT_PATH = "";
     public static final String DEFAULT_DB_VENDOR = "dev-mem";
 
     private String host = "localhost";
