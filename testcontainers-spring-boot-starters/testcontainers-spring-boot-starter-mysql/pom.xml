@@ -17,12 +17,10 @@
         <dependency>
             <groupId>com.github.vaatech.testcontainers</groupId>
             <artifactId>testcontainers-spring-boot-starter</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.vaatech.testcontainers</groupId>
             <artifactId>testcontainers-spring-boot-mysql</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
