@@ -34,6 +34,7 @@
         <module>testcontainers-spring-boot-wiremock</module>
         <module>testcontainers-spring-boot-starters</module>
         <module>testcontainers-spring-boot-starters-bom</module>
+        <module>testcontainers-spring-boot-samples</module>
     </modules>
 
     <dependencyManagement>
