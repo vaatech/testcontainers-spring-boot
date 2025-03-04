@@ -4,12 +4,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.github.vaatech.testcontainers.autoconfigure.mailpit.invoker.ApiClient;
-import com.github.vaatech.testcontainers.autoconfigure.mailpit.rest.ApplicationApi;
-import com.github.vaatech.testcontainers.autoconfigure.mailpit.rest.MessageApi;
-import com.github.vaatech.testcontainers.autoconfigure.mailpit.rest.MessagesApi;
+import com.github.vaatech.testcontainers.mailpit.invoker.ApiClient;
+import com.github.vaatech.testcontainers.mailpit.rest.ApplicationApi;
+import com.github.vaatech.testcontainers.mailpit.rest.MessageApi;
+import com.github.vaatech.testcontainers.mailpit.rest.MessagesApi;
+import com.github.vaatech.testcontainers.mailpit.MailPitProperties;
+import com.github.vaatech.testcontainers.mailpit.Mailbox;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +26,7 @@ import java.time.Duration;
 
 @AutoConfiguration
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
+@ConditionalOnClass({MailPitProperties.class, Mailbox.class})
 @EnableConfigurationProperties(MailPitProperties.class)
 @Import(MailPitContainerConfiguration.class)
 public class MailPitConnectionAutoConfiguration {

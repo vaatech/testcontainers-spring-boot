@@ -1,6 +1,7 @@
 package com.github.vaatech.testcontainers.autoconfigure.wiremock;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.vaatech.testcontainers.wiremock.WireMockProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -13,6 +14,7 @@ import org.springframework.test.context.DynamicPropertyRegistrar;
 
 @AutoConfiguration
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
+@ConditionalOnClass({WireMockProperties.class, WireMock.class})
 @EnableConfigurationProperties(WireMockProperties.class)
 @Import(WireMockContainerConfiguration.class)
 public class WireMockConnectionAutoConfiguration {
@@ -27,7 +29,6 @@ public class WireMockConnectionAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnClass(WireMock.class)
     @ConditionalOnMissingBean(WireMock.class)
     WireMock wireMock(final WireMockConnectionDetails connectionDetails) {
         WireMock wireMock = new WireMock(connectionDetails.host(), connectionDetails.port());

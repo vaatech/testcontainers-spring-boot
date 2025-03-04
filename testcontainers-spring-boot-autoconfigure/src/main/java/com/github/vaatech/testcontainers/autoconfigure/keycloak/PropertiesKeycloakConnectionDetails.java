@@ -1,5 +1,7 @@
 package com.github.vaatech.testcontainers.autoconfigure.keycloak;
 
+import com.github.vaatech.testcontainers.keycloak.KeycloakProperties;
+
 import static java.lang.String.format;
 
 public class PropertiesKeycloakConnectionDetails implements KeycloakConnectionDetails {

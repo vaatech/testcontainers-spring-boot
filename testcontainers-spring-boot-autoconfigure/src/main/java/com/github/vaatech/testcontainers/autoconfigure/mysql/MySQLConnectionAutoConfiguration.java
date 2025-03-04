@@ -1,7 +1,9 @@
 package com.github.vaatech.testcontainers.autoconfigure.mysql;
 
+import com.github.vaatech.testcontainers.mysql.MySQLProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.jdbc.JdbcConnectionDetails;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,7 @@ import org.springframework.test.context.DynamicPropertyRegistrar;
 
 @AutoConfiguration
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
+@ConditionalOnClass(MySQLProperties.class)
 @EnableConfigurationProperties(MySQLProperties.class)
 @Import(MySQLContainerConfiguration.class)
 public class MySQLConnectionAutoConfiguration {

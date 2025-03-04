@@ -1,5 +1,7 @@
 package com.github.vaatech.testcontainers.autoconfigure.wiremock;
 
+import com.github.vaatech.testcontainers.wiremock.WireMockProperties;
+
 public class PropertiesWireMockConnectionDetails implements WireMockConnectionDetails {
 
     private final WireMockProperties properties;

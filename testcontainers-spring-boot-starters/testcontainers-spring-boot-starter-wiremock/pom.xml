@@ -24,14 +24,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.wiremock</groupId>
-            <artifactId>wiremock</artifactId>
-            <version>${wiremock.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wiremock.integrations.testcontainers</groupId>
-            <artifactId>wiremock-testcontainers-module</artifactId>
-            <version>${wiremock.testcontainers.version}</version>
+            <groupId>com.github.vaatech.testcontainers</groupId>
+            <artifactId>testcontainers-spring-boot-wiremock</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

@@ -1,5 +1,6 @@
 package com.github.vaatech.testcontainers.autoconfigure.wiremock;
 
+import com.github.vaatech.testcontainers.wiremock.WireMockProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;

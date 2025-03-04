@@ -1,5 +1,7 @@
 package com.github.vaatech.testcontainers.autoconfigure.mailpit;
 
+import com.github.vaatech.testcontainers.mailpit.MailPitProperties;
+
 public class PropertiesMailPitConnectionDetails implements MailPitConnectionDetails {
 
     private final MailPitProperties properties;

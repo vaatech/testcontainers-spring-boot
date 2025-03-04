@@ -1,5 +1,7 @@
 package com.github.vaatech.testcontainers.autoconfigure;
 
+import com.github.vaatech.testcontainers.core.ContainerFactory;
+import com.github.vaatech.testcontainers.core.config.CommonContainerProperties;
 import lombok.NonNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +49,9 @@ public class ContainerFactoryTest {
     static class TestConfiguration {
 
         @Bean(destroyMethod = "stop")
-        EchoContainer echoContainer(EchoProperties echoProperties) {
-            return ContainerFactory.createContainer(echoProperties, EchoContainer.class);
+        EchoContainer echoContainer(EchoProperties echoProperties,
+                                    ContainerFactory containerFactory) {
+            return containerFactory.createContainer(echoProperties, EchoContainer.class);
         }
     }
 

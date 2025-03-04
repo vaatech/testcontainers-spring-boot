@@ -1,5 +1,7 @@
 package com.github.vaatech.testcontainers.autoconfigure;
 
+import com.github.vaatech.testcontainers.core.ContainerFactory;
+import com.github.vaatech.testcontainers.core.ContainerFactoryImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
@@ -22,5 +24,11 @@ public class TestcontainersEnvironmentAutoConfiguration {
         Network network = Network.newNetwork();
         log.info("Created docker Network with id={}", network.getId());
         return network;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ContainerFactory containerFactory() {
+        return new ContainerFactoryImpl();
     }
 }

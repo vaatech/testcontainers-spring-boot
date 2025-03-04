@@ -1,5 +1,6 @@
 package com.github.vaatech.testcontainers.autoconfigure.mailpit;
 
+import com.github.vaatech.testcontainers.mailpit.MailPitProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

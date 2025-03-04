@@ -1,5 +1,6 @@
 package com.github.vaatech.testcontainers.autoconfigure;
 
+import com.github.vaatech.testcontainers.core.config.CommonContainerProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.junit.jupiter.api.Test;

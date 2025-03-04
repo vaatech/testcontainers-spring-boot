@@ -1,8 +1,10 @@
 package com.github.vaatech.testcontainers.autoconfigure.keycloak;
 
+import com.github.vaatech.testcontainers.keycloak.KeycloakProperties;
 import org.keycloak.admin.client.Keycloak;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +17,7 @@ import static dasniko.testcontainers.keycloak.ExtendableKeycloakContainer.MASTER
 
 @AutoConfiguration
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
+@ConditionalOnClass(KeycloakProperties.class)
 @EnableConfigurationProperties(KeycloakProperties.class)
 @Import(KeycloakContainerConfiguration.class)
 public class KeycloakConnectionAutoConfiguration {

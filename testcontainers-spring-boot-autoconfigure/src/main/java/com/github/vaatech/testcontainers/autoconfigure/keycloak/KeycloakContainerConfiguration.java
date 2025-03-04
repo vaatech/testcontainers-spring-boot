@@ -2,7 +2,9 @@ package com.github.vaatech.testcontainers.autoconfigure.keycloak;
 
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizer;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizers;
-import com.github.vaatech.testcontainers.autoconfigure.ContainerFactory;
+import com.github.vaatech.testcontainers.core.ContainerFactory;
+import com.github.vaatech.testcontainers.keycloak.KeycloakContainer;
+import com.github.vaatech.testcontainers.keycloak.KeycloakProperties;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -16,7 +18,7 @@ import org.testcontainers.containers.Network;
 import java.util.Optional;
 
 import static com.github.vaatech.testcontainers.autoconfigure.TestcontainersEnvironmentAutoConfiguration.DEFAULT_DNS_NAME;
-import static com.github.vaatech.testcontainers.autoconfigure.keycloak.KeycloakProperties.BEAN_NAME_CONTAINER_KEYCLOAK;
+import static com.github.vaatech.testcontainers.keycloak.KeycloakProperties.BEAN_NAME_CONTAINER_KEYCLOAK;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(KeycloakContainer.class)
@@ -31,9 +33,10 @@ public class KeycloakContainerConfiguration {
     @Bean(name = BEAN_NAME_CONTAINER_KEYCLOAK, destroyMethod = "stop")
     KeycloakContainer
     keycloak(final KeycloakProperties properties,
+             final ContainerFactory containerFactory,
              final ContainerCustomizers<KeycloakContainer, ContainerCustomizer<KeycloakContainer>> customizers) {
 
-        KeycloakContainer keycloakContainer = ContainerFactory.createContainer(properties, KeycloakContainer.class);
+        KeycloakContainer keycloakContainer = containerFactory.createContainer(properties, KeycloakContainer.class);
         return customizers.customize(keycloakContainer);
     }
 

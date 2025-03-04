@@ -1,5 +1,5 @@
 org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory=\
-com.github.vaatech.testcontainers.autoconfigure.keycloak.KeycloakContainerConnectionDetailsFactory,\
-com.github.vaatech.testcontainers.autoconfigure.mailpit.MailPitContainerConnectionDetailsFactory,\
-com.github.vaatech.testcontainers.autoconfigure.wiremock.WireMockContainerConnectionDetailsFactory
+com.github.vaatech.testcontainers.service.connection.keycloak.KeycloakContainerConnectionDetailsFactory,\
+com.github.vaatech.testcontainers.service.connection.mailpit.MailPitContainerConnectionDetailsFactory,\
+com.github.vaatech.testcontainers.service.connection.wiremock.WireMockContainerConnectionDetailsFactory
 

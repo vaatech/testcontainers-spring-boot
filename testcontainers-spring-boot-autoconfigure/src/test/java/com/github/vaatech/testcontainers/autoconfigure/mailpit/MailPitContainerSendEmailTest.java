@@ -2,6 +2,7 @@ package com.github.vaatech.testcontainers.autoconfigure.mailpit;
 
 import com.github.vaatech.testcontainers.autoconfigure.DockerPresenceAutoConfiguration;
 import com.github.vaatech.testcontainers.autoconfigure.TestcontainersEnvironmentAutoConfiguration;
+import com.github.vaatech.testcontainers.mailpit.Mailbox;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;

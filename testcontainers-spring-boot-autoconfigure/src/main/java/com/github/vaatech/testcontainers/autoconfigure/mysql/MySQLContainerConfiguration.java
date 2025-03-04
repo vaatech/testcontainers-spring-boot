@@ -2,7 +2,8 @@ package com.github.vaatech.testcontainers.autoconfigure.mysql;
 
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizer;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizers;
-import com.github.vaatech.testcontainers.autoconfigure.ContainerFactory;
+import com.github.vaatech.testcontainers.core.ContainerFactory;
+import com.github.vaatech.testcontainers.mysql.MySQLProperties;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -17,6 +18,7 @@ import org.testcontainers.containers.Network;
 import java.util.Optional;
 
 import static com.github.vaatech.testcontainers.autoconfigure.TestcontainersEnvironmentAutoConfiguration.DEFAULT_DNS_NAME;
+import static com.github.vaatech.testcontainers.mysql.MySQLProperties.BEAN_NAME_CONTAINER_MYSQL;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(MySQLContainer.class)
@@ -28,12 +30,13 @@ public class MySQLContainerConfiguration {
     private static final String MYSQL_NETWORK_ALIAS = "mysql.testcontainer.docker";
 
     @ServiceConnection
-    @Bean(name = MySQLProperties.BEAN_NAME_CONTAINER_MYSQL, destroyMethod = "stop")
+    @Bean(name = BEAN_NAME_CONTAINER_MYSQL, destroyMethod = "stop")
     public MySQLContainer<?>
-    mysql(MySQLProperties properties,
-          ContainerCustomizers<MySQLContainer<?>, ContainerCustomizer<MySQLContainer<?>>> customizers) {
+    mysql(final MySQLProperties properties,
+          final ContainerFactory containerFactory,
+          final ContainerCustomizers<MySQLContainer<?>, ContainerCustomizer<MySQLContainer<?>>> customizers) {
 
-        MySQLContainer<?> mysql = ContainerFactory.createContainer(properties, MySQLContainer.class);
+        MySQLContainer<?> mysql = containerFactory.createContainer(properties, MySQLContainer.class);
         return customizers.customize(mysql);
     }
 

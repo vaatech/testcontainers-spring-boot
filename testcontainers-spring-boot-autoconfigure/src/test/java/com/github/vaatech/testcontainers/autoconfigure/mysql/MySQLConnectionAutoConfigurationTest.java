@@ -3,6 +3,7 @@ package com.github.vaatech.testcontainers.autoconfigure.mysql;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizer;
 import com.github.vaatech.testcontainers.autoconfigure.DockerPresenceAutoConfiguration;
 import com.github.vaatech.testcontainers.autoconfigure.TestcontainersEnvironmentAutoConfiguration;
+import com.github.vaatech.testcontainers.mysql.MySQLProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -2,7 +2,9 @@ package com.github.vaatech.testcontainers.autoconfigure.mailpit;
 
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizer;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizers;
-import com.github.vaatech.testcontainers.autoconfigure.ContainerFactory;
+import com.github.vaatech.testcontainers.core.ContainerFactory;
+import com.github.vaatech.testcontainers.mailpit.MailPitContainer;
+import com.github.vaatech.testcontainers.mailpit.MailPitProperties;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -17,7 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static com.github.vaatech.testcontainers.autoconfigure.TestcontainersEnvironmentAutoConfiguration.DEFAULT_DNS_NAME;
-import static com.github.vaatech.testcontainers.autoconfigure.mailpit.MailPitProperties.BEAN_NAME_CONTAINER_MAILPIT;
+import static com.github.vaatech.testcontainers.mailpit.MailPitProperties.BEAN_NAME_CONTAINER_MAILPIT;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(MailPitContainer.class)
@@ -30,10 +32,11 @@ public class MailPitContainerConfiguration {
     @ServiceConnection(type = MailPitConnectionDetails.class)
     @Bean(name = BEAN_NAME_CONTAINER_MAILPIT, destroyMethod = "stop")
     public MailPitContainer
-    mailpit(MailPitProperties properties,
-            ContainerCustomizers<MailPitContainer, ContainerCustomizer<MailPitContainer>> customizers) {
+    mailpit(final MailPitProperties properties,
+            final ContainerFactory containerFactory,
+            final ContainerCustomizers<MailPitContainer, ContainerCustomizer<MailPitContainer>> customizers) {
 
-        MailPitContainer mailpit = ContainerFactory.createContainer(properties, MailPitContainer.class);
+        MailPitContainer mailpit = containerFactory.createContainer(properties, MailPitContainer.class);
         return customizers.customize(mailpit);
     }
 

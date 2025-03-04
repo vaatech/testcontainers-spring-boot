@@ -3,7 +3,8 @@ package com.github.vaatech.testcontainers.autoconfigure.wiremock;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizer;
 import com.github.vaatech.testcontainers.autoconfigure.ContainerCustomizers;
-import com.github.vaatech.testcontainers.autoconfigure.ContainerFactory;
+import com.github.vaatech.testcontainers.core.ContainerFactory;
+import com.github.vaatech.testcontainers.wiremock.WireMockProperties;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -18,7 +19,7 @@ import org.wiremock.integrations.testcontainers.WireMockContainer;
 import java.util.Optional;
 
 import static com.github.vaatech.testcontainers.autoconfigure.TestcontainersEnvironmentAutoConfiguration.DEFAULT_DNS_NAME;
-import static com.github.vaatech.testcontainers.autoconfigure.wiremock.WireMockProperties.BEAN_NAME_CONTAINER_WIREMOCK;
+import static com.github.vaatech.testcontainers.wiremock.WireMockProperties.BEAN_NAME_CONTAINER_WIREMOCK;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({WireMock.class, WireMockContainer.class})
@@ -32,9 +33,10 @@ public class WireMockContainerConfiguration {
     @ServiceConnection(type = WireMockConnectionDetails.class)
     @Bean(name = BEAN_NAME_CONTAINER_WIREMOCK, destroyMethod = "stop")
     WireMockContainer wiremock(final WireMockProperties properties,
+                               final ContainerFactory containerFactory,
                                final ContainerCustomizers<WireMockContainer, ContainerCustomizer<WireMockContainer>> customizers) {
 
-        WireMockContainer wireMockContainer = ContainerFactory.createContainer(properties, WireMockContainer.class);
+        WireMockContainer wireMockContainer = containerFactory.createContainer(properties, WireMockContainer.class);
         return customizers.customize(wireMockContainer);
     }
 
