@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.github.vaatech.testcontainers.autoconfigure.TestcontainersEnvironmentAutoConfiguration.DEFAULT_DNS_NAME;
+import static com.github.vaatech.testcontainers.core.config.CommonContainerProperties.*;
 
 public class DefaultContainerConfigurer implements ContainerConfigurer {
 
@@ -46,7 +47,7 @@ public class DefaultContainerConfigurer implements ContainerConfigurer {
                 .withExtraHost(DEFAULT_DNS_NAME, "host-gateway")
                 .withNetwork(network);
 
-        for (CommonContainerProperties.MountVolume mountVolume : properties.getMountVolumes()) {
+        for (MountVolume mountVolume : properties.getMountVolumes()) {
             MountableFile mountableFile = switch (mountVolume.type()) {
                 case CLASSPATH -> {
                     if (mountVolume.mode() != null) {
@@ -73,7 +74,7 @@ public class DefaultContainerConfigurer implements ContainerConfigurer {
         if (!properties.getTmpFs().isEmpty()) {
             Map<String, String> tmpFsMapping = properties.getTmpFs()
                     .stream()
-                    .collect(Collectors.toMap(CommonContainerProperties.TmpFsMount::folder, CommonContainerProperties.TmpFsMount::options));
+                    .collect(Collectors.toMap(TmpFsMount::folder, TmpFsMount::options));
             container.withTmpFs(tmpFsMapping);
         }
 
